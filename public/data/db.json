@@ -1,0 +1,118 @@
+{
+  "conversations": [
+    {
+      "id": 1,
+      "participants": [5, 2],
+      "isGroup": false,
+      "isArchived": false,
+      "messages": [
+        { "id": 1, "senderId": 5, "content": "Tu fais quoi de beau aujourd’hui ?", "timestamp": "2025-05-30T03:31:59.828Z" },
+        { "id": 2, "senderId": 2, "content": "Salut Alice-5, tu vas bien ?", "timestamp": "2025-05-30T04:31:59.828Z" },
+        { "id": 3, "senderId": 5, "content": "Oui ça va, merci ! Et toi Alice-2 ?", "timestamp": "2025-05-30T04:31:59.828Z" },
+        { "id": 4, "senderId": 5, "content": "Oui ça va, merci ! Et toi Alice-2 ?", "timestamp": "2025-05-30T05:31:59.828Z" },
+        { "id": 5, "senderId": 2, "content": "Tu fais quoi de beau aujourd’hui ?", "timestamp": "2025-05-30T05:31:59.828Z" },
+        { "id": 6, "senderId": 2, "content": "Bonne soirée Alice-5 !", "timestamp": "2025-05-30T06:31:59.828Z" },
+        { "id": 7, "senderId": 5, "content": "Je bosse sur un projet très cool.", "timestamp": "2025-05-30T06:31:59.828Z" },
+        { "id": 8, "senderId": 5, "content": "Salut Alice-2, tu vas bien ?", "timestamp": "2025-05-30T07:31:59.828Z" },
+        { "id": 9, "senderId": 2, "content": "À 14h ça te va ?", "timestamp": "2025-05-30T07:31:59.828Z" },
+        { "id": 10, "senderId": 2, "content": "Merci pour ton aide !", "timestamp": "2025-05-30T08:31:59.828Z" },
+        { "id": 11, "senderId": 5, "content": "Parfait, à toute à l'heure !", "timestamp": "2025-05-30T08:31:59.828Z" },
+        { "id": 12, "senderId": 5, "content": "Avec plaisir, dis-moi quand !", "timestamp": "2025-05-30T09:31:59.828Z" },
+        { "id": 13, "senderId": 2, "content": "Quand tu veux, on s'appelle ?", "timestamp": "2025-05-30T09:31:59.828Z" },
+        { "id": 14, "senderId": 2, "content": "Avec plaisir, dis-moi quand !", "timestamp": "2025-05-30T10:31:59.828Z" },
+        { "id": 15, "senderId": 5, "content": "Quand tu veux, on s'appelle ?", "timestamp": "2025-05-30T10:31:59.828Z" },
+        { "id": 16, "senderId": 5, "content": "Merci pour ton aide !", "timestamp": "2025-05-30T11:31:59.828Z" },
+        { "id": 17, "senderId": 2, "content": "Super ! Tu me montres ?", "timestamp": "2025-05-30T11:31:59.828Z" }
+      ]
+    },
+    {
+      "id": 2,
+      "participants": [3, 5],
+      "isGroup": false,
+      "isArchived": false,
+      "messages": [
+        { "id": 18, "senderId": 3, "content": "Bonne soirée Alice-5 !", "timestamp": "2025-05-30T06:31:59.828Z" },
+        { "id": 19, "senderId": 5, "content": "Je te tiens au courant dès que j'en ai.", "timestamp": "2025-05-30T07:31:59.828Z" },
+        { "id": 20, "senderId": 3, "content": "Quand tu veux, on s'appelle ?", "timestamp": "2025-05-30T08:31:59.828Z" },
+        { "id": 21, "senderId": 5, "content": "Super ! Tu me montres ?", "timestamp": "2025-05-30T09:31:59.828Z" },
+        { "id": 22, "senderId": 3, "content": "Oui ça va, merci ! Et toi Alice-5 ?", "timestamp": "2025-05-30T10:31:59.828Z" },
+        { "id": 23, "senderId": 5, "content": "Tu as des nouvelles ?", "timestamp": "2025-05-30T11:31:59.828Z" }
+      ]
+    },
+    {
+      "id": 3,
+      "participants": [1, 3, 4],
+      "isGroup": true,
+      "admins": [1, 4],
+      "isArchived": false,
+      "messages": [
+        { "id": 24, "senderId": 3, "content": "Salut Alice, tu vas bien ?", "timestamp": "2025-05-30T05:31:59.828Z" },
+        { "id": 25, "senderId": 1, "content": "À 14h ça te va ?", "timestamp": "2025-05-30T06:31:59.828Z" },
+        { "id": 26, "senderId": 3, "content": "Tu fais quoi de beau aujourd’hui ?", "timestamp": "2025-05-30T07:31:59.828Z" },
+        { "id": 27, "senderId": 1, "content": "Je bosse sur un projet très cool.", "timestamp": "2025-05-30T08:31:59.828Z" },
+        { "id": 28, "senderId": 3, "content": "Quand tu veux, on s'appelle ?", "timestamp": "2025-05-30T09:31:59.828Z" },
+        { "id": 29, "senderId": 1, "content": "Oui ça va, merci ! Et toi Alice-3 ?", "timestamp": "2025-05-30T10:31:59.828Z" },
+        { "id": 30, "senderId": 3, "content": "Quand tu veux, on s'appelle ?", "timestamp": "2025-05-30T11:31:59.828Z" },
+        { "id": 31, "senderId": 4, "content": "Salut les gars", "timestamp": "2025-05-31T15:50:19.341Z" },
+        { "id": 32, "senderId": 4, "content": "Salut", "timestamp": "2025-05-31T18:51:59.600Z" }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice",
+      "phone": "+221771234567",
+      "avatar": "https://randomuser.me/api/portraits/women/1.jpg",
+      "lastSeen": "2025-06-05T13:45:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Bob",
+      "phone": "+221781112233",
+      "avatar": "https://randomuser.me/api/portraits/men/2.jpg",
+      "lastSeen": "2025-06-05T12:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "Claire",
+      "phone": "+221766543210",
+      "avatar": "https://randomuser.me/api/portraits/women/3.jpg",
+      "lastSeen": "2025-06-05T08:20:00Z"
+    },
+    {
+      "id": 4,
+      "name": "David",
+      "phone": "+221701112244",
+      "avatar": "https://randomuser.me/api/portraits/men/4.jpg",
+      "lastSeen": null
+    },
+    {
+      "id": 5,
+      "name": "Emma",
+      "phone": "+221772345678",
+      "avatar": "https://randomuser.me/api/portraits/women/5.jpg",
+      "lastSeen": "2025-06-04T23:50:00Z"
+    }
+  ],
+  "statuses": [
+    {
+      "userId": 2,
+      "updatedAt": "2025-06-05T10:00:00Z",
+      "content": [
+        {
+          "type": "text",
+          "value": "Je démarre ma journée "
+        },
+        {
+          "type": "image",
+          "value": "https://example.com/status1.jpg"
+        },
+        {
+          "type": "video",
+          "value": "https://example.com/status2.mp4"
+        }
+      ]
+    }
+  ]
+}
