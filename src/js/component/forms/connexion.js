@@ -108,6 +108,7 @@ export const formConnexionContainer = createElement(
       "position-relative",
       "bg-gradient-to-r from-sky-500 to-indigo-500",
     ],
+    vShow: false,
     onSubmit: (e) => {
       e.preventDefault();
 

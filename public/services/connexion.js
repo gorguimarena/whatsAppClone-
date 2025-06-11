@@ -1,6 +1,6 @@
 import { BASE_URL, USERS_RESSOURCE } from '../../config/config.js'
 import { formConnexionContainer } from '../../src/js/component/forms/connexion.js';
-import { space } from '../../src/js/component/user/space.js';
+import { space } from '../../src/js/component/main/space.js';
 
 export async function hasPhone(phone) {
   const encodedPhone = encodeURIComponent(phone);
