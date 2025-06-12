@@ -145,6 +145,13 @@
           "content": "Salut",
           "type": "text",
           "timestamp": "2025-06-12T18:36:49.304Z"
+        },
+        {
+          "id": 23,
+          "senderId": 5,
+          "content": "Tu vas bien",
+          "type": "text",
+          "timestamp": "2025-06-12T18:48:22.144Z"
         }
       ]
     },
