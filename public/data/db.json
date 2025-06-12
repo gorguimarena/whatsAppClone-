@@ -138,6 +138,13 @@
           "content": "Tu vas mieux maintenant",
           "type": "text",
           "timestamp": "2025-06-12T13:04:27.870Z"
+        },
+        {
+          "id": 22,
+          "senderId": 5,
+          "content": "Salut",
+          "type": "text",
+          "timestamp": "2025-06-12T18:36:49.304Z"
         }
       ]
     },
@@ -192,6 +199,13 @@
           "content": "Bien",
           "type": "text",
           "timestamp": "2025-06-12T13:08:13.151Z"
+        },
+        {
+          "id": 25,
+          "senderId": 5,
+          "content": "Ca va",
+          "type": "text",
+          "timestamp": "2025-06-12T18:37:53.909Z"
         }
       ]
     },
