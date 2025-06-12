@@ -1,7 +1,7 @@
 import { createElement } from "./component/components";
 import { formConnexionContainer } from "./component/forms/connexion";
 import { loseInternet } from "../../public/error/loseInternet";
-import { space } from "./component/user/space";
+import { space } from "./component/main/space";
 
 
 export const app = createElement(
@@ -12,8 +12,10 @@ export const app = createElement(
       "flex",
       "items-center",
       "justify-center",
-      "bg-gray-100",
+      "bg-blue-950",
     ],
   },
   [formConnexionContainer, loseInternet, space]
 );
+
+

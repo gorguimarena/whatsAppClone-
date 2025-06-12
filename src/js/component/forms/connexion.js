@@ -4,6 +4,9 @@ import { isValidLocalPhoneNumber, isOnline } from "../../../../public/validators
 import { errorOutput } from "../../constantes/errors";
 import { loseInternet } from "../../../../public/error/loseInternet";
 import { hasPhone, toSpace } from "../../../../public/services/connexion";
+import { setUserId } from "../main/space";
+import { store } from "../../services/user";
+
 
 
 
@@ -108,6 +111,7 @@ export const formConnexionContainer = createElement(
       "position-relative",
       "bg-gradient-to-r from-sky-500 to-indigo-500",
     ],
+    vShow: false,
     onSubmit: (e) => {
       e.preventDefault();
 
@@ -126,10 +130,14 @@ export const formConnexionContainer = createElement(
 
       const user = hasPhone(completNumber);
 
+
       user.then((data) => {
         if (data) {
           toSpace();
+          setUserId(data.id);
+          store(data);
           console.log("Utilisateur trouvé :", data);
+
         } else {
           errorOutput.textContent = "Ce numéro n'est pas enregistré !";
         }
