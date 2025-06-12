@@ -52,7 +52,7 @@ function createContactItem(item, selectedId) {
 
           currentIntervalId = setInterval(() => {
             loadDiscussionWith(selectedId, userId);
-          }, 100);
+          }, 300);
         }
        
       },

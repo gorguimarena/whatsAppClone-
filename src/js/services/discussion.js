@@ -37,8 +37,6 @@ export let selectedDiscussion = {
   contact: null,
   messages: [],
 };
-const old = 0;
-
 export function loadDiscussionWith(conversationId, currentUserId = 1) {
   const convo = getConversations().find((c) => c.id === conversationId);  
 
@@ -47,6 +45,10 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     discussionChamp.innerHTML = "";
     return;
   }
+
+  const isAtBottom =
+    discussionChamp.scrollHeight - discussionChamp.scrollTop <=
+    discussionChamp.clientHeight + 50;
 
   if (convo.isGroup) {
     selectedDiscussion.contact = { id: convo.id, name: convo.name };
@@ -65,8 +67,12 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     currentUserId
   );
   messagesNodes.forEach((node) => discussionChamp.appendChild(node));
-  scrollToBottom(discussionChamp);
+
+  if (isAtBottom) {
+    scrollToBottom(discussionChamp);
+  }
 }
+
 
 function scrollToBottom(container) {
   container.scrollTop = container.scrollHeight;
@@ -77,8 +83,10 @@ function scrollToBottom(container) {
 export function discussionPArt(messages = [], currentUserId = 1) {
   if (!Array.isArray(messages)) return [];
 
+
   return messages.map((msg) => {
-    const isMine = msg.senderId === currentUserId;
+    const isMine = msg.senderId == currentUserId;
+
     const baseClass = [
       "max-w-[70%]",
       "p-2",

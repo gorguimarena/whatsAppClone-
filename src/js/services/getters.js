@@ -83,8 +83,9 @@ export function getConversationsToServer(userId) {
   fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}`)
     .then(res => res.json())
     .then(data => {
+      
       filterAndStoreConversationsByUserId(data, userId);
-      console.log("Conversations mises à jour");
+      console.log("Conversations mises à jour", userId);
     })
     .catch(err => console.error(err))
     .finally(() => {
@@ -102,13 +103,13 @@ export function getUsersWithPrivateConversations(userId) {
     .then(res => res.json())
     .then(conversations => {
       const privateConvos = conversations.filter(
-        conv => !conv.isGroup && conv.participants.includes(userId)
+        conv => !conv.isGroup && conv.participants.includes(Number(userId))
       );
 
       const otherUserIds = new Set();
       privateConvos.forEach(conv => {
         conv.participants.forEach(id => {
-          if (id !== userId) otherUserIds.add(id);
+          if (id != userId) otherUserIds.add(id);
         });
       });
 

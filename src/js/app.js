@@ -12,7 +12,7 @@ export const app = createElement(
       "flex",
       "items-center",
       "justify-center",
-      "bg-blue-950",
+      "bg-[#0c1317]",
     ],
   },
   [formConnexionContainer, loseInternet, space]

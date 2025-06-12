@@ -25,7 +25,7 @@ const btnConnect = createElement(
   "button",
   {
     class:
-      "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 box-border",
+      "bg-[#0c1387] text-white p-3 rounded hover:bg-blue-600 box-border w-96",
     type: "submit",
   },
   "Se connecter"
@@ -41,9 +41,6 @@ const inputNumber = createElement("input", {
     "focus:outline-none",
     "focus:ring-2",
     "p-2",
-    "my-2",
-    "h-80",
-    "bg-transparent",
     "text-gray-900",
     "placeholder:text-gray-400",
     "box-border",
@@ -81,7 +78,7 @@ const selectCountry = createElement(
 const formConnexion = createElement(
   "div",
   {
-    class: ["grid", "w-full gap-4", "box-border"],
+    class: ["grid", "gap-3", "box-border", "w-96"],
   },
   [
     selectCountry,
@@ -89,7 +86,7 @@ const formConnexion = createElement(
       "div",
       {
         class: [
-          "flex gap-2 w-full justify-center items-center rounded border box-border p-1",
+          "flex w-full justify-center items-center rounded box-border",
         ],
       },
       [codeCountry, inputNumber]
@@ -101,17 +98,27 @@ export const formConnexionContainer = createElement(
   "form",
   {
     class: [
-      "w-96",
-      "flex",
-      "flex-col",
-      "h-screen",
-      "justify-center",
-      "gap-4",
-      "box-border",
-      "position-relative",
-      "bg-gradient-to-r from-sky-500 to-indigo-500",
-    ],
-    vShow: false,
+  "w-full",
+  "max-w-md",
+  "mx-auto",
+  "flex",
+  "flex-col",
+  "justify-center", 
+  "items-center",
+  "gap-6",
+  "p-8",
+  "bg-gradient-to-br",
+  "bg-[#0c1317]",
+  "to-[#1a237e]",
+  "rounded-xl",
+  "shadow-2xl",
+  "border",
+  "border-white/10",
+  "backdrop-blur-sm",
+  "relative",
+  "overflow-hidden"
+],
+    vShow: true,
     onSubmit: (e) => {
       e.preventDefault();
 
@@ -136,7 +143,6 @@ export const formConnexionContainer = createElement(
           toSpace();
           setUserId(data.id);
           store(data);
-          console.log("Utilisateur trouvé :", data);
 
         } else {
           errorOutput.textContent = "Ce numéro n'est pas enregistré !";
@@ -151,18 +157,16 @@ export const formConnexionContainer = createElement(
   [
     createElement(
       "h1",
-      { class: "text-2xl font-bold text-gray-900 text-center mb-4 box-border" },
+      { class: "text-2xl font-bold text-white text-center box-border" },
       "Saisissez un numéro de téléphone"
     ),
     createElement(
       "h4",
-      { class: "text-gray-600 text-center my-8 box-border" },
+      { class: "text-white font-bold text-center my-8 box-border" },
       "Selectionnez votre pays et saisissez votre numéro de téléphone"
     ),
-    createElement("div", { class: "w-full p-4 box-border" }),
     formConnexion,
     errorOutput,
-    createElement("div", { class: "w-full p-4 box-border" }),
     btnConnect,
   ]
 );

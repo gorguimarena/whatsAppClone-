@@ -5,7 +5,7 @@ import { discussion } from "./discussionChamp";
 import { getConversationsToServer, getUsersWithPrivateConversations } from "../../services/getters";
 
 
-export let userId = 5;
+export let userId = null;
 
 export function setUserId(id) {
   userId = id;
@@ -20,7 +20,7 @@ export const space = createElement(
       "flex",
       "bg-[#222e35]",
     ],
-    vShow: true,
+    vShow: false,
   },
   [
     sideBar,

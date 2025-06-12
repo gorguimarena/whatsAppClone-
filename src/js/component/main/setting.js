@@ -46,7 +46,7 @@ const options = createElement("div", {
   vFor: {
     each: optionsAction,
     render: (item) => {
-        const isLogout = item.name === "Log out";
+        const isLogout = item.name == "Log out";
       return createElement(
         "div",
         {

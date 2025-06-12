@@ -1,75 +1,78 @@
 import { getUsers } from "./user";
 
 export function storeConversations(conversations) {
-    localStorage.setItem('conversations', JSON.stringify(conversations));
+  localStorage.setItem("conversations", JSON.stringify(conversations));
 }
 export function getConversations() {
-    return JSON.parse(localStorage.getItem('conversations')) || [];
+  return JSON.parse(localStorage.getItem("conversations")) || [];
 }
 
 export function clearConversations() {
-    localStorage.removeItem('conversations');
+  localStorage.removeItem("conversations");
 }
 
 export function storeArchivedConversations(conversations) {
-    localStorage.setItem('archivedConversations', JSON.stringify(conversations));
+  localStorage.setItem("archivedConversations", JSON.stringify(conversations));
 }
 export function getArchivedConversations() {
-    return JSON.parse(localStorage.getItem('archivedConversations')) || [];
+  return JSON.parse(localStorage.getItem("archivedConversations")) || [];
 }
 export function clearArchivedConversations() {
-    localStorage.removeItem('archivedConversations');
+  localStorage.removeItem("archivedConversations");
 }
 
 export function storeGroupDiscussions(groups) {
-    localStorage.setItem('groupDiscussions', JSON.stringify(groups));
+  localStorage.setItem("groupDiscussions", JSON.stringify(groups));
 }
 export function getGroupDiscussions() {
-    return JSON.parse(localStorage.getItem('groupDiscussions')) || [];
+  return JSON.parse(localStorage.getItem("groupDiscussions")) || [];
 }
 
 export function clearGroupDiscussions() {
-    localStorage.removeItem('groupDiscussions');
+  localStorage.removeItem("groupDiscussions");
 }
 
 export function users() {
-    return JSON.parse(localStorage.getItem('users')) || [];
+  return JSON.parse(localStorage.getItem("users")) || [];
 }
 export function storeUsers(users) {
-    localStorage.setItem('users', JSON.stringify(users));
+  localStorage.setItem("users", JSON.stringify(users));
 }
 export function clearUsers() {
-    localStorage.removeItem('users');
+  localStorage.removeItem("users");
 }
 
 export function getNormalConversationSummaries(userId) {
-  const conversations = JSON.parse(localStorage.getItem('conversations') || '[]');
+  const conversations = JSON.parse(
+    localStorage.getItem("conversations") || "[]"
+  );
 
-  console.log(JSON.parse(localStorage.getItem('conversations') || '[]'));
-  
+  console.log(JSON.parse(localStorage.getItem("conversations") || "[]"));
+
   return conversations
-    .filter(conv => conv.participants.includes(userId))
-    .map(conv => formatConversationSummary(conv, userId));
+    .filter((conv) => conv.participants.includes(Number(userId)))
+    .map((conv) => formatConversationSummary(conv, userId));
 }
 
 export function getGroupConversationSummaries(userId) {
-  const groupConversations = JSON.parse(localStorage.getItem('groupDiscussions') || '[]');
+  const groupConversations = JSON.parse(
+    localStorage.getItem("groupDiscussions") || "[]"
+  );
 
   return groupConversations
-    .filter(conv => conv.participants.includes(userId))
-    .map(conv => formatConversationSummary(conv, userId));
+    .filter((conv) => conv.participants.includes(userId))
+    .map((conv) => formatConversationSummary(conv, userId));
 }
-
 
 export function getArchivedConversationSummaries(userId) {
-  const archivedConversations = JSON.parse(localStorage.getItem('archivedConversations') || '[]');
+  const archivedConversations = JSON.parse(
+    localStorage.getItem("archivedConversations") || "[]"
+  );
 
   return archivedConversations
-    .filter(conv => conv.participants.includes(userId))
-    .map(conv => formatConversationSummary(conv, userId));
+    .filter((conv) => conv.participants.includes(userId))
+    .map((conv) => formatConversationSummary(conv, userId));
 }
-
-
 
 function formatConversationSummary(conv, userId) {
   const lastMessage = conv.messages?.[conv.messages.length - 1] || {};
@@ -88,32 +91,40 @@ function formatConversationSummary(conv, userId) {
 function getConversationName(conv, userId) {
   if (conv.isGroup && conv.name) return conv.name;
 
-  const users = getUsers();  
+  const users = getUsers();
 
-  const otherId = conv.participants.find((id) => id !== userId);
+  console.log("users", users);
+  
+
+  const otherId = conv.participants.find((id) => id != userId);
 
   const otherUser = users.find((user) => String(user.id) === String(otherId));
 
   return otherUser ? otherUser.name : "Inconnu";
 }
 
-
-
-
 export function filterAndStoreConversationsByUserId(conversations, userId) {
-  const userConversations = conversations.filter(conv => conv.participants.includes(userId));
+  const userConversations = conversations.filter(conv =>
+  conv.participants.includes(Number(userId))
+);
+
+
+
+  console.log("userId =", userId, typeof userId);
+  console.log("Participants types :", conversations.map(c => c.participants.map(p => typeof p)));
+
 
   const archived = [];
   const groups = [];
   const normal = [];
 
-  userConversations.forEach(conv => {
+  userConversations.forEach((conv) => {
     if (conv.isArchived) {
-      archived.push(conv);      
+      archived.push(conv);
     } else if (conv.isGroup) {
-      groups.push(conv);        
+      groups.push(conv);
     } else {
-      normal.push(conv);        
+      normal.push(conv);
     }
   });
 
@@ -121,5 +132,3 @@ export function filterAndStoreConversationsByUserId(conversations, userId) {
   storeArchivedConversations(archived);
   storeGroupDiscussions(groups);
 }
-
-

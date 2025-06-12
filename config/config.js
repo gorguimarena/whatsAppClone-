@@ -7,7 +7,7 @@ const config = {
   }
 };
 
-export const BASE_IMG = "data/images";
+export const BASE_IMG = "/data/images";
 
 const env = window.location.hostname === "localhost" ? "dev" : "prod";
 const BASE_URL = config[env].baseURL;
