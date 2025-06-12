@@ -1,7 +1,45 @@
 import { createElement } from "../components";
-import { sideBarActionsBottom, sideBarActionsTop } from "../../services/sideBar";
+import {
+  sideBarActionsBottom,
+  sideBarActionsTop,
+} from "../../services/sideBar";
 import { BASE_IMG } from "../../../../config/config";
-import { renderSidebar, showChannels, showChats, showProfile, showSettings, showStatus } from "../../services/sideBar";
+import {
+  renderSidebar,
+  showChannels,
+  showChats,
+  showProfile,
+  showSettings,
+  showStatus,
+} from "../../services/sideBar";
+import { getConversations } from "../../services/conversations";
+import { renderDiscussionContacts } from "../main/lister";
+import { getUser } from "../../services/user";
+import { discusionVider } from "../../services/discussion";
+
+
+export const styleDescription = [
+  "absolute",
+  "left-full",
+  "ml-2",
+  "top-1/2",
+  "-translate-y-1/2",
+  "bg-white",
+  "text-black",
+  "text-sm",
+  "py-1",
+  "px-2",
+  "rounded",
+  "whitespace-nowrap",
+  "opacity-0",
+  "scale-95",
+  "group-hover:opacity-100",
+  "group-hover:scale-100",
+  "transition-all",
+  "duration-200",
+  "z-10",
+  "shadow-lg",
+];
 
 export const styleContainer = [
   "w-12",
@@ -14,6 +52,8 @@ export const styleContainer = [
   "cursor-pointer",
   "mb-2",
   "p-2",
+  "relative",
+  "group",
 ];
 
 export const styleIcon = ["text-gray-500", "text-2xl"];
@@ -26,7 +66,6 @@ export function setSelected(index) {
   isSelected = index;
 }
 
-
 export const chats = createElement(
   "div",
   {
@@ -36,14 +75,23 @@ export const chats = createElement(
     ],
     onClick: () => {
       isSelected = sideBarActionsTop[0].index;
+      renderDiscussionContacts();
+      discusionVider();
       renderSidebar();
-      showChats();
+      showChats();      
     },
   },
   [
     createElement("i", {
       class: [sideBarActionsTop[0].icon, ...styleIcon],
     }),
+    createElement(
+      "div",
+      {
+        class: [...styleDescription],
+      },
+      "Chats"
+    ),
   ]
 );
 
@@ -57,6 +105,7 @@ export const status = createElement(
     onClick: () => {
       isSelected = sideBarActionsTop[1].index;
       renderSidebar();
+      discusionVider();
       showStatus();
     },
   },
@@ -64,6 +113,13 @@ export const status = createElement(
     createElement("i", {
       class: [sideBarActionsTop[1].icon, ...styleIcon],
     }),
+    createElement(
+      "div",
+      {
+        class: [...styleDescription],
+      },
+      "Status"
+    ),
   ]
 );
 
@@ -75,15 +131,23 @@ export const channels = createElement(
       ...styleContainer,
     ],
     onClick: () => {
-        isSelected = sideBarActionsTop[2].index;
-        renderSidebar();
-        showChannels();
+      isSelected = sideBarActionsTop[2].index;
+      renderSidebar();
+      discusionVider();
+      showChannels();
     },
   },
   [
     createElement("i", {
       class: [sideBarActionsTop[2].icon, ...styleIcon],
     }),
+    createElement(
+      "div",
+      {
+        class: [...styleDescription],
+      },
+      "Channels"
+    ),
   ]
 );
 
@@ -95,14 +159,22 @@ export const communities = createElement(
       ...styleContainer,
     ],
     onClick: () => {
-        isSelected = sideBarActionsTop[3].index;
-        renderSidebar();
+      isSelected = sideBarActionsTop[3].index;
+      renderSidebar();
+      discusionVider();
     },
   },
   [
     createElement("i", {
       class: [sideBarActionsTop[3].icon, ...styleIcon],
     }),
+    createElement(
+      "div",
+      {
+        class: [...styleDescription],
+      },
+      "Communities"
+    ),
   ]
 );
 
@@ -116,6 +188,7 @@ export const settings = createElement(
     onClick: () => {
       isSelected = sideBarActionsBottom[0].index;
       renderSidebar();
+      discusionVider();
       showSettings();
     },
   },
@@ -123,6 +196,13 @@ export const settings = createElement(
     createElement("i", {
       class: [sideBarActionsBottom[0].icon, ...styleIcon],
     }),
+    createElement(
+      "div",
+      {
+        class: [...styleDescription],
+      },
+      "Settings"
+    ),
   ]
 );
 
@@ -133,14 +213,23 @@ export const avatar = createElement(
     onClick: () => {
       isSelected = 5;
       renderSidebar();
+      discusionVider();
       showProfile();
     },
   },
-  createElement("img", {
+  [
+    createElement("img", {
     src: `${BASE_IMG}/Bal.jpeg`,
     alt: "User Avatar",
     class: ["rounded-full"],
-  })
+  }),
+    createElement(
+      "div",
+      {
+        class: [...styleDescription],
+      },
+      "Profile"
+    ),
+
+  ]
 );
-
-

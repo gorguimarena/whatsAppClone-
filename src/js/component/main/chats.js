@@ -4,114 +4,12 @@ const listDisplay = [
     'All', 'Unread', 'Favorites', 'Groups'
 ]
 
-const discussionContactsContainer = createElement(
+export const discussionContactsContainer = createElement(
   "div",
   {
     id: "discussion-contacts-container",
     class: ["w-full", "flex", "flex-col", "gap-2"],
-  },
-  createElement(
-    "ul",
-    {
-      class: [
-        "w-full",
-        "h-full",
-        "overflow-y-auto",
-        "flex",
-        "flex-col",
-        "gap-2",
-        "mt-2",
-        
-      ],
-    },
-    [
-      // This is where the contacts will be rendered
-      createElement(
-        "li",
-        {
-          class: [
-            "w-full",
-            "p-2",
-            "bg-[#222e35]",
-            "rounded-md",
-            "cursor-pointer",
-          ],
-        },
-        [
-          createElement(
-            "span",
-            {
-              class: ["text-white", "font-semibold"],
-            },
-            "Contact 1"
-          ),
-        ]
-      ),
-      createElement(
-        "li",
-        {
-          class: [
-            "w-full",
-            "p-2",
-            "bg-[#222e35]",
-            "rounded-md",
-            "cursor-pointer",
-          ],
-        },
-        [
-          createElement(
-            "span",
-            {
-              class: ["text-white", "font-semibold"],
-            },
-            "Contact 1"
-          ),
-        ]
-      ),
-      createElement(
-        "li",
-        {
-          class: [
-            "w-full",
-            "p-2",
-            "bg-[#222e35]",
-            "rounded-md",
-            "cursor-pointer",
-          ],
-        },
-        [
-          createElement(
-            "span",
-            {
-              class: ["text-white", "font-semibold"],
-            },
-            "Contact 1"
-          ),
-        ]
-      ),
-      createElement(
-        "li",
-        {
-          class: [
-            "w-full",
-            "p-2",
-            "bg-[#222e35]",
-            "rounded-md",
-            "cursor-pointer",
-          ],
-        },
-        [
-          createElement(
-            "span",
-            {
-              class: ["text-white", "font-semibold"],
-            },
-            "Contact 1"
-          ),
-        ]
-      ),
-    ]
-  )
+  }
 );
 
 const inputSearch = createElement("input", {
@@ -168,7 +66,7 @@ export const chats = createElement(
               [
                 createElement("i", {
                   class: [
-                    "bi bi-chat-square-text",
+                    "bi bi-folder-plus",
                     "text-white",
                     "text-2xl",
                     "cursor-pointer",
@@ -176,7 +74,7 @@ export const chats = createElement(
                 }),
                 createElement("i", {
                   class: [
-                    "bi bi-gear",
+                    "bi bi-three-dots-vertical",
                     "text-white",
                     "text-2xl",
                     "cursor-pointer",

@@ -309,10 +309,10 @@ export const status = createElement(
           },
           [
             createElement("i", {
-              class: ["bi bi-chat-square-text", ...styleIcon],
+              class: ["bi bi-plus", ...styleIcon],
             }),
             createElement("i", {
-              class: ["bi bi-gear", ...styleIcon],
+              class: ["bi bi-three-dots-vertical", ...styleIcon],
             }),
           ]
         ),

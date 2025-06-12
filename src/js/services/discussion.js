@@ -1,5 +1,46 @@
+import { getConversations, getNormalConversationSummaries } from "./conversations";
+import { discussion, discussionChamp, discussionChampContainer, discussionVide} from "../component/main/discussionChamp";
+import { createElement } from "../component/components";
+import { getUsers } from "./user";
+import { CONVERSATION_RESSOURCE, BASE_URL } from "../../../config/config";
+
+export function setAvatarUser(avatar) {
+  ElAvatar.textContent = avatar;
+}
+export function setNameUser(name) {
+  ElName.textContent = name;
+}
+export function setLastMessageUser(message) {
+  ElMessage.textContent = message;
+}
+
+const ElAvatar = createElement("div", {
+  class: [
+    "rounded-full",
+    "bg-blue-500",
+    "w-16",
+    "h-16",
+    "flex",
+    "justify-center",
+    "items-center",
+  ],
+});
+
+const ElName = createElement("span", {
+  class: ["text-lg", "font-semibold", "text-black"],
+});
+const ElMessage = createElement("span", {
+  class: ["text-sm", "text-gray-600"],
+});
+
+export let selectedDiscussion = {
+  contact: null,
+  messages: [],
+};
+const old = 0;
+
 export function loadDiscussionWith(conversationId, currentUserId = 1) {
-  const convo = conversations.find((c) => c.id === conversationId);
+  const convo = getConversations().find((c) => c.id === conversationId);  
 
   if (!convo) {
     selectedDiscussion.messages = [];
@@ -11,11 +52,12 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     selectedDiscussion.contact = { id: convo.id, name: convo.name };
   } else {
     const otherUserId = convo.participants.find((id) => id !== currentUserId);
-    const contact = users.find((u) => u.id === otherUserId);
+    const contact = getUsers().find((u) => u.id === otherUserId);
     selectedDiscussion.contact = contact;
   }
 
-  selectedDiscussion.messages = convo.messages;
+  selectedDiscussion.messages = Array.isArray(convo.messages) ? convo.messages : [];
+
   discussionChamp.innerHTML = "";
 
   const messagesNodes = discussionPArt(
@@ -23,9 +65,18 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     currentUserId
   );
   messagesNodes.forEach((node) => discussionChamp.appendChild(node));
+  scrollToBottom(discussionChamp);
 }
 
-export function discussionPArt(messages, currentUserId = 1) {
+function scrollToBottom(container) {
+  container.scrollTop = container.scrollHeight;
+}
+
+
+
+export function discussionPArt(messages = [], currentUserId = 1) {
+  if (!Array.isArray(messages)) return [];
+
   return messages.map((msg) => {
     const isMine = msg.senderId === currentUserId;
     const baseClass = [
@@ -54,12 +105,36 @@ export function discussionPArt(messages, currentUserId = 1) {
   });
 }
 
-export function setAvatarUser(avatar) {
-  ElAvatar.textContent = avatar;
+export function showMessage(){
+  discussion.innerHTML = "";
+  discussion.appendChild(discussionChampContainer);
 }
-export function setNameUser(name) {
-  ElName.textContent = name;
+
+
+export function sendTextMessage(conversationId, senderId, content) {
+
+  return fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}/${conversationId}`)
+    .then(res => res.json())
+    .then(convo => {
+      const messages = convo.messages || [];
+
+      const newMessage = {
+        id: messages.length ? messages[messages.length - 1].id + 1 : 1,
+        senderId,
+        content,
+        type: "text",
+        timestamp: new Date().toISOString(),
+      };
+
+      return fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}/${conversationId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [...messages, newMessage] }),
+      });
+    });
 }
-export function setLastMessageUser(message) {
-  ElMessage.textContent = message;
+
+export function discusionVider() {
+  discussion.innerHTML = "";
+  discussion.appendChild(discussionVide);
 }
