@@ -35,7 +35,15 @@ const addTeamCommunity = createElement("div", {
         },
         [
           createElement('div', {
-            
+            class: [
+                'bg-green-500',
+                'ml-4',
+                'rounded-full',
+                'w-16 h-16',
+                'flex',
+                'justify-center',
+                'items-center'
+            ]
           }, createElement("i", {
             class: [item.icon, ...styleIconOptions,],
           })),
@@ -129,10 +137,10 @@ export const newChats = createElement(
           [
             createElement(
               "div",
-              { class: ["flex", "justify-center", "items-center"] },
+              { class: ["flex", "justify-center", "items-center", "ml-4"] },
               [
                 createElement("img", {
-                  src: `${BASE_IMG}/Bal.jpeg`,
+                  src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
                   alt: "Profile Picture",
                   class: ["rounded-full", "w-20", "h-20"],
                 }),
