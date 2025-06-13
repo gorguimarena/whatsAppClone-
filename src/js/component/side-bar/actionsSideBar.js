@@ -219,7 +219,7 @@ export const avatar = createElement(
   },
   [
     createElement("img", {
-    src: `${BASE_IMG}/Bal.jpeg`,
+    src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
     alt: "User Avatar",
     class: ["rounded-full"],
   }),

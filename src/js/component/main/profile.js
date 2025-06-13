@@ -134,7 +134,7 @@ const fileInput = createElement("input", {
 });
 
 const avatarImg = createElement("img", {
-  src: `${BASE_IMG}/Bal.jpeg`,
+  src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
   alt: "User Avatar",
   class: ["rounded-full", "w-80", "h-80", "object-cover", "transition-all", "duration-300"],
 });

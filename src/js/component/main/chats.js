@@ -8,7 +8,7 @@ export const discussionContactsContainer = createElement(
   "div",
   {
     id: "discussion-contacts-container",
-    class: ["w-full", "flex", "flex-col", "gap-2"],
+    class: ["w-full", "flex", "flex-col"],
   }
 );
 

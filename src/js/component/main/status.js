@@ -252,7 +252,7 @@ const statusListItems = createElement("div", {
             [
               createElement("img", {
                 class: ["w-12", "h-12", "rounded-full"],
-                src: `${BASE_IMG}/Bal.jpeg`,
+                src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
                 alt: item.username,
               }),
             ]

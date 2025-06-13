@@ -4,6 +4,7 @@ import { setting } from "./setting";
 import { chats } from "./chats";
 import { status } from "./status";
 import { channels } from "./channels";
+import { newChats } from "./newChats";
 
 
 
@@ -17,5 +18,5 @@ export const main = createElement(
       e.preventDefault();
     },
   },
-  chats
+  newChats
 );

@@ -5,7 +5,7 @@ import { discussion } from "./discussionChamp";
 import { getConversationsToServer, getUsersWithPrivateConversations } from "../../services/getters";
 
 
-export let userId = null;
+export let userId = window.location.hostname === "localhost" ? 5 : null;
 
 export function setUserId(id) {
   userId = id;
@@ -20,7 +20,7 @@ export const space = createElement(
       "flex",
       "bg-[#222e35]",
     ],
-    vShow: false,
+    vShow: window.location.hostname === "localhost" ? true : false,
   },
   [
     sideBar,

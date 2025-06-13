@@ -1,14 +1,14 @@
 import { createElement } from "../components";
 import { countries } from "../../constantes/constants";
-import { isValidLocalPhoneNumber, isOnline } from "../../../../public/validators/connexion";
+import {
+  isValidLocalPhoneNumber,
+  isOnline,
+} from "../../../../public/validators/connexion";
 import { errorOutput } from "../../constantes/errors";
 import { loseInternet } from "../../../../public/error/loseInternet";
 import { hasPhone, toSpace } from "../../../../public/services/connexion";
 import { setUserId } from "../main/space";
 import { store } from "../../services/user";
-
-
-
 
 let selectedCountry = countries[0].code;
 
@@ -44,7 +44,7 @@ const inputNumber = createElement("input", {
     "text-gray-900",
     "placeholder:text-gray-400",
     "box-border",
-  ]
+  ],
 });
 
 const selectCountry = createElement(
@@ -85,40 +85,96 @@ const formConnexion = createElement(
     createElement(
       "div",
       {
-        class: [
-          "flex w-full justify-center items-center rounded box-border",
-        ],
+        class: ["flex w-full justify-center items-center rounded box-border"],
       },
       [codeCountry, inputNumber]
     ),
   ]
 );
+const connectProgress = createElement('div', {
+  class: [
+    "flex",
+    "w-full",
+    "h-full",
+    "fixed",
+    "top-0",
+    "left-0",
+    "bg-black/60",
+    "z-50",
+    "items-center",
+    "justify-center"
+  ],
+  vShow: false
+}, 
+  createElement("div", {
+    class: [
+      "flex",
+      "flex-col",
+      "items-center",
+      "justify-center",
+      "bg-white/10",
+      "backdrop-blur-md",
+      "p-6",
+      "rounded-xl",
+      "shadow-lg",
+      "gap-4",
+      "text-white"
+    ]
+  }, [
+    createElement("svg", {
+      class: "animate-spin h-10 w-10 text-white",
+      xmlns: "http://www.w3.org/2000/svg",
+      fill: "none",
+      viewBox: "0 0 24 24"
+    }, [
+      createElement("circle", {
+        class: "opacity-25",
+        cx: "12",
+        cy: "12",
+        r: "10",
+        stroke: "currentColor",
+        "stroke-width": "4"
+      }),
+      createElement("path", {
+        class: "opacity-75",
+        fill: "currentColor",
+        d: "M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+      })
+    ]),
+    
+    createElement("span", {
+      class: "text-lg font-semibold tracking-wide"
+    }, "Connexion sécurisée en cours…")
+  ])
+);
+
 
 export const formConnexionContainer = createElement(
   "form",
   {
     class: [
-  "w-full",
-  "max-w-md",
-  "mx-auto",
-  "flex",
-  "flex-col",
-  "justify-center", 
-  "items-center",
-  "gap-6",
-  "p-8",
-  "bg-gradient-to-br",
-  "bg-[#0c1317]",
-  "to-[#1a237e]",
-  "rounded-xl",
-  "shadow-2xl",
-  "border",
-  "border-white/10",
-  "backdrop-blur-sm",
-  "relative",
-  "overflow-hidden"
-],
-    vShow: true,
+      "w-full",
+      "max-w-md",
+      "mx-auto",
+      "flex",
+      "flex-col",
+      "justify-center",
+      "items-center",
+      "gap-6",
+      "p-8",
+      "bg-gradient-to-br",
+      "bg-[#0c1317]",
+      "to-[#1a237e]",
+      "rounded-xl",
+      "shadow-2xl",
+      "border",
+      "border-white/10",
+      "backdrop-blur-sm",
+      "relative",
+      "overflow-hidden",
+      "relative",
+    ],
+    vShow: window.location.hostname === "localhost" ? false : true,
     onSubmit: (e) => {
       e.preventDefault();
 
@@ -128,30 +184,32 @@ export const formConnexionContainer = createElement(
         return;
       }
 
-
       if (!isValidLocalPhoneNumber(inputNumber.value, errorOutput)) {
         return;
       }
 
-      const completNumber = `${selectedCountry}${inputNumber.value}`
+      const completNumber = `${selectedCountry}${inputNumber.value}`;
 
       const user = hasPhone(completNumber);
 
+      user
+        .then((data) => {
+          connectProgress.style.display = "none"; 
 
-      user.then((data) => {
-        if (data) {
-          toSpace();
-          setUserId(data.id);
-          store(data);
-
-        } else {
-          errorOutput.textContent = "Ce numéro n'est pas enregistré !";
-        }
-      }).catch((err) => {
-        console.error("Erreur lors de la connexion :", err);
-        errorOutput.textContent = "Une erreur est survenue, veuillez réessayer.";
-      });
-      
+          if (data) {
+            toSpace();
+            setUserId(data.id);
+            store(data);
+          } else {
+            errorOutput.textContent = "Ce numéro n'est pas enregistré !";
+          }
+        })
+        .catch((err) => {
+          connectProgress.style.display = "none"; 
+          console.error("Erreur lors de la connexion :", err);
+          errorOutput.textContent =
+            "Une erreur est survenue, veuillez réessayer.";
+        });
     },
   },
   [
@@ -168,5 +226,6 @@ export const formConnexionContainer = createElement(
     formConnexion,
     errorOutput,
     btnConnect,
+    connectProgress,
   ]
 );

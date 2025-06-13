@@ -47,6 +47,8 @@ const options = createElement("div", {
     each: optionsAction,
     render: (item) => {
         const isLogout = item.name == "Log out";
+        console.log("boolen : ", item.name == "Log out");
+        
       return createElement(
         "div",
         {
@@ -62,7 +64,7 @@ const options = createElement("div", {
         },
         [
           createElement("i", {
-            class: [item.icon, ...styleIconOptions, isLogout ? "text-red-600" : ""],
+            class: [item.icon, ...styleIconOptions, isLogout ? "text-red-500" : ""],
           }),
           createElement(
             "div",
@@ -74,7 +76,7 @@ const options = createElement("div", {
                 "py-5",
                 "border-[#1a2329]",
                 "text-2xl",
-                isLogout ? "text-red-600" : "text-white",
+                isLogout ? "text-red-500" : "text-white",
               ],
             },
             item.name
@@ -128,7 +130,7 @@ const seeProfile = createElement(
       { class: ["flex", "justify-center", "items-center", "mx-4"] },
       [
         createElement("img", {
-          src: `${BASE_IMG}/Bal.jpeg`,
+          src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
           alt: "Profile Picture",
           class: ["rounded-full", "w-20", "h-20", "mr-2"],
         }),
