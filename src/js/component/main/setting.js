@@ -1,5 +1,6 @@
 import { createElement } from "../components";
 import { BASE_IMG } from "../../../../config/config";
+import { disconnected } from "../../services/connect";
 
 export const styleIconOptions = ["text-white", "text-3xl", "px-6"];
 
@@ -37,7 +38,7 @@ const optionsAction = [
   {
     name: "Log out",
     icon: "bi bi-box-arrow-right",
-    action: () => {},
+    action: disconnected,
   },
 ];
 

@@ -1,13 +1,9 @@
 import { discussionContactsContainer } from "./chats";
 import { createElement } from "../components";
-import {
-  getNormalConversationSummaries,
-} from "../../services/conversations";
+import { getNormalConversationSummaries } from "../../services/conversations";
 import { loadDiscussionWith, showMessage } from "../../services/discussion";
 import { userId } from "./space";
 import { setSelected } from "../side-bar/actionsSideBar";
-
-let currentIntervalId = null;
 
 
 function createAvatar(name) {
@@ -17,11 +13,42 @@ function createAvatar(name) {
   return avatar;
 }
 
-function createContactItem(item, selectedId) {
-  const isSelected = selectedId === item.id;
-  console.log(
-    `Creating contact item for: ${item.name} with ID: ${item.id}, selected: ${isSelected}`
-  );
+let currentIntervalId = null;
+let currentIntervalIdContact = null;
+
+let selectedContactId = null;
+
+export let currentConversationId = null;
+
+export function setCurrentConversationId(id) {
+  currentConversationId = id;
+}
+
+export function getCurrentConversationId() {
+  return currentConversationId;
+}
+
+
+function switchContact(item) {
+  if (selectedContactId === item.id) return;
+
+  selectedContactId = item.id;
+  currentConversationId = item.id; 
+  clearInterval(currentIntervalId);
+
+  setSelected(selectedContactId);
+  showMessage();
+  
+  loadDiscussionWith(selectedContactId, userId);
+
+  currentIntervalId = setInterval(() => {
+    loadDiscussionWith(selectedContactId, userId);
+  }, 400); 
+}
+
+
+function createContactItem(item) {
+  const isSelected = selectedContactId === item.id;
 
   const wrapperClass = [
     "shadow",
@@ -30,34 +57,14 @@ function createContactItem(item, selectedId) {
     "border-b-2",
     "justify-between",
     "cursor-pointer",
-    isSelected ? "bg-[#222e35]" : "",
     "hover:bg-[#222e35]",
-    "border-[#1a2329]"
-  ];
+    "border-[#1a2329]",
+    isSelected && "bg-[#222e35]",
+  ].filter(Boolean);
 
   return createElement(
     "div",
-    {
-      onClick: () => {
-        selectedId = item.id;
-        renderDiscussionContacts(selectedId);
-        showMessage();
-        setSelected(selectedId);
-        
-        if (selectedId) {
-          if (currentIntervalId) {
-            clearInterval(currentIntervalId);
-            currentIntervalId = null;
-          }
-
-          currentIntervalId = setInterval(() => {
-            loadDiscussionWith(selectedId, userId);
-          }, 300);
-        }
-       
-      },
-      class: wrapperClass,
-    },
+    { onClick: () => switchContact(item), class: wrapperClass },
     [
       createElement(
         "div",
@@ -88,7 +95,7 @@ function createContactItem(item, selectedId) {
             ),
             createElement(
               "span",
-              { class: ["text-sm", "text-gray-600", "text-white"] },
+              { class: ["text-sm", "text-gray-400"] },
               item.lastMessage
             ),
           ]),
@@ -110,7 +117,7 @@ function createContactItem(item, selectedId) {
         [
           createElement(
             "span",
-            { class: ["text-lg", "font-semibold", "text-white", "opacity-50"] },
+            { class: ["text-xs", "text-white", "opacity-50"] },
             item.date
           ),
           createElement("span", {
@@ -122,16 +129,32 @@ function createContactItem(item, selectedId) {
   );
 }
 
-export function renderGroupDiscussions(list, selectedId = null) {
-  discussionContactsContainer.innerHTML = "";
-  const elements = list.map((item) => createContactItem(item, selectedId));
-  elements.forEach((el) => discussionContactsContainer.appendChild(el));
+function clearCurrentInterval() {
+  if (currentIntervalId) {
+    clearInterval(currentIntervalId);
+    currentIntervalId = null;
+  }
 }
 
-export function renderDiscussionContacts(selectedId = 0) {
-  const list = getNormalConversationSummaries(userId);
-  console.log(list);
+export function renderDiscussionContacts() {
+  if (currentIntervalIdContact) {
+    clearInterval(currentIntervalIdContact);
+    currentIntervalIdContact = null;
+  }
 
+  currentIntervalIdContact = setInterval(() => {
+    const list = getNormalConversationSummaries(userId);
+    discussionContactsContainer.innerHTML = "";
+    list.map(createContactItem).forEach(el =>
+      discussionContactsContainer.appendChild(el)
+    );
+    console.log("Liste mise à jour");
+  }, 1000);
+}
+
+
+
+export function renderGroupDiscussions(list, selectedId = null) {
   discussionContactsContainer.innerHTML = "";
   const elements = list.map((item) => createContactItem(item, selectedId));
   elements.forEach((el) => discussionContactsContainer.appendChild(el));

@@ -3,6 +3,8 @@ import { discussion, discussionChamp, discussionChampContainer, discussionVide} 
 import { createElement } from "../component/components";
 import { getUsers } from "./user";
 import { CONVERSATION_RESSOURCE, BASE_URL } from "../../../config/config";
+import { getCurrentConversationId } from "../component/main/lister";
+
 
 export function setAvatarUser(avatar) {
   ElAvatar.textContent = avatar;
@@ -38,6 +40,11 @@ export let selectedDiscussion = {
   messages: [],
 };
 export function loadDiscussionWith(conversationId, currentUserId = 1) {
+  
+  if (conversationId !== getCurrentConversationId()) {
+    return;
+  }
+
   const convo = getConversations().find((c) => c.id === conversationId);  
 
   if (!convo) {
@@ -58,7 +65,9 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     selectedDiscussion.contact = contact;
   }
 
-  selectedDiscussion.messages = Array.isArray(convo.messages) ? convo.messages : [];
+  selectedDiscussion.messages = Array.isArray(convo.messages)
+    ? convo.messages
+    : [];
 
   discussionChamp.innerHTML = "";
 
@@ -72,6 +81,7 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     scrollToBottom(discussionChamp);
   }
 }
+
 
 
 function scrollToBottom(container) {

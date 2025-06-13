@@ -18,5 +18,5 @@ export const main = createElement(
       e.preventDefault();
     },
   },
-  newChats
+  window.location.hostname == "localhost" ? newChats : chats
 );

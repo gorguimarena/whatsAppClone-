@@ -1,6 +1,7 @@
 import { createElement } from "../components";
 import { styleIconOptions } from "./setting";
 import { BASE_IMG } from "../../../../config/config";
+import { newChatToChats } from "../../services/setter";
 
 const optionsAction = [
   {
@@ -34,19 +35,23 @@ const addTeamCommunity = createElement("div", {
           onclick: item.action,
         },
         [
-          createElement('div', {
-            class: [
-                'bg-green-500',
-                'ml-4',
-                'rounded-full',
-                'w-16 h-16',
-                'flex',
-                'justify-center',
-                'items-center'
-            ]
-          }, createElement("i", {
-            class: [item.icon, ...styleIconOptions,],
-          })),
+          createElement(
+            "div",
+            {
+              class: [
+                "bg-green-500",
+                "ml-4",
+                "rounded-full",
+                "w-16 h-16",
+                "flex",
+                "justify-center",
+                "items-center",
+              ],
+            },
+            createElement("i", {
+              class: [item.icon, ...styleIconOptions],
+            })
+          ),
           createElement(
             "div",
             {
@@ -54,7 +59,7 @@ const addTeamCommunity = createElement("div", {
                 "text-white",
                 "border-b-2",
                 "flex-1",
-                "py-5",
+                "py-6",
                 "border-[#1a2329]",
                 "text-2xl",
                 "text-white",
@@ -100,11 +105,29 @@ export const newChats = createElement(
   },
   [
     createElement(
-      "h1",
+      "div",
       {
-        class: ["text-white", "text-3xl", "font-bold", "mx-4", "my-5"],
+        class: ["mx-4", "my-5", "flex", "gap-3"],
       },
-      "Settings"
+      [
+        createElement(
+          "i",
+          {
+            class: ["text-white", "text-4xl", "font-bold", "bi bi-arrow-left", "my-5", 'cursor-pointer'],
+            onclick: ()=> {
+                newChatToChats();
+            }
+          },
+          
+        ),
+        createElement(
+          "span",
+          {
+            class: ["text-white", "text-2xl", "mx-4", "my-5"],
+          },
+          "New chat"
+        ),
+      ]
     ),
     search,
     addTeamCommunity,
@@ -113,7 +136,12 @@ export const newChats = createElement(
       {
         class: [...styleIconOptions, "border-[#1a2329]", "border-b-2", "py-6"],
       },
-      "Contacts"
+      createElement('span', {
+        class: [
+            'text-2xl',
+            'text-green-500'
+        ]   
+      }, "CONTACTS ON WHATSAPP")
     ),
     createElement(
       "div",
@@ -159,7 +187,7 @@ export const newChats = createElement(
                   "flex",
                   "flex-col",
                   "flex-1",
-                  "justify-start",
+                  "justify-center",
                 ],
               },
               [
@@ -178,6 +206,18 @@ export const newChats = createElement(
           ]
         ),
       ]
+    ),
+    createElement(
+      "div",
+      {
+        class: [...styleIconOptions, "border-[#1a2329]", "border-b-2", "py-6"],
+      },
+      createElement('span', {
+        class: [
+            'text-2xl',
+            'text-green-500'
+        ]   
+      }, "A")
     ),
   ]
 );
