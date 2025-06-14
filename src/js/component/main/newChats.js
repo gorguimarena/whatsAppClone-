@@ -115,7 +115,7 @@ export const newChats = createElement(
           {
             class: ["text-white", "text-4xl", "font-bold", "bi bi-arrow-left", "my-5", 'cursor-pointer'],
             onclick: ()=> {
-                newChatToChats();
+              newChatToChats();
             }
           },
           

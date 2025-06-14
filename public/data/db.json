@@ -159,6 +159,13 @@
           "content": "Salut les gars",
           "type": "text",
           "timestamp": "2025-06-13T13:16:55.374Z"
+        },
+        {
+          "id": 25,
+          "senderId": 5,
+          "content": "Reponse moi please",
+          "type": "text",
+          "timestamp": "2025-06-13T15:16:31.374Z"
         }
       ]
     },
@@ -300,35 +307,40 @@
       "name": "Alice",
       "phone": "+221771234567",
       "avatar": "https://randomuser.me/api/portraits/women/1.jpg",
-      "lastSeen": "2025-06-05T13:45:00Z"
+      "lastSeen": "2025-06-05T13:45:00Z",
+      "about": ""
     },
     {
       "id": "2",
       "name": "Bob",
       "phone": "+221781112233",
       "avatar": "https://randomuser.me/api/portraits/men/2.jpg",
-      "lastSeen": "2025-06-05T12:30:00Z"
+      "lastSeen": "2025-06-05T12:30:00Z",
+      "about": ""
     },
     {
       "id": "3",
       "name": "Claire",
       "phone": "+221766543210",
       "avatar": "https://randomuser.me/api/portraits/women/3.jpg",
-      "lastSeen": "2025-06-05T08:20:00Z"
+      "lastSeen": "2025-06-05T08:20:00Z",
+      "about": ""
     },
     {
       "id": "4",
       "name": "David",
       "phone": "+221701112244",
       "avatar": "https://randomuser.me/api/portraits/men/4.jpg",
-      "lastSeen": null
+      "lastSeen": null,
+      "about": ""
     },
     {
       "id": "5",
       "name": "Emma",
       "phone": "+221772345678",
       "avatar": "https://randomuser.me/api/portraits/women/5.jpg",
-      "lastSeen": "2025-06-04T23:50:00Z"
+      "lastSeen": "2025-06-04T23:50:00Z",
+      "about": ""
     }
   ],
   "statuses": [

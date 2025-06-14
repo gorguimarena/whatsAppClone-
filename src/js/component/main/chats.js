@@ -1,6 +1,5 @@
 import { chatsToNewChat } from "../../services/setter";
 import { createElement } from "../components";
-import { newChats } from "./newChats";
 
 const listDisplay = [
     'All', 'Unread', 'Favorites', 'Groups'

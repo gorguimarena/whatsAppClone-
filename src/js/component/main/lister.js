@@ -3,7 +3,7 @@ import { createElement } from "../components";
 import { getNormalConversationSummaries } from "../../services/conversations";
 import { loadDiscussionWith, showMessage } from "../../services/discussion";
 import { userId } from "./space";
-import { setSelected } from "../side-bar/actionsSideBar";
+import { isSelected, setSelected } from "../side-bar/actionsSideBar";
 
 
 function createAvatar(name) {
@@ -129,10 +129,11 @@ function createContactItem(item) {
   );
 }
 
-function clearCurrentInterval() {
+export function clearCurrentInterval() {
   if (currentIntervalId) {
     clearInterval(currentIntervalId);
     currentIntervalId = null;
+    selectedContactId = null;
   }
 }
 

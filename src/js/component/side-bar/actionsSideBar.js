@@ -3,7 +3,6 @@ import {
   sideBarActionsBottom,
   sideBarActionsTop,
 } from "../../services/sideBar";
-import { BASE_IMG } from "../../../../config/config";
 import {
   renderSidebar,
   showChannels,
@@ -12,9 +11,7 @@ import {
   showSettings,
   showStatus,
 } from "../../services/sideBar";
-import { getConversations } from "../../services/conversations";
 import { renderDiscussionContacts } from "../main/lister";
-import { getUser } from "../../services/user";
 import { discusionVider } from "../../services/discussion";
 
 

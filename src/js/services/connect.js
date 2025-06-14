@@ -1,8 +1,18 @@
 import { setUserId } from "../component/main/space";
 
-function disconnected() {
-    setUserId(null);
-    location.reload(); 
+function setIsConnected(connected) {
+  localStorage.setItem('isConnected', JSON.stringify(connected));
 }
 
-export { disconnected };
+function getIsConnected() {
+  return JSON.parse(localStorage.getItem('isConnected')) || false;
+}
+
+function disconnected() {
+  setUserId(null);
+  setIsConnected(false);
+  location.reload();
+}
+
+
+export { disconnected, setIsConnected, getIsConnected };

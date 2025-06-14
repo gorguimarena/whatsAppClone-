@@ -9,6 +9,7 @@ import { loseInternet } from "../../../../public/error/loseInternet";
 import { hasPhone, toSpace } from "../../../../public/services/connexion";
 import { setUserId } from "../main/space";
 import { store } from "../../services/user";
+import { getIsConnected, setIsConnected } from "../../services/connect";
 
 let selectedCountry = countries[0].code;
 
@@ -174,7 +175,7 @@ export const formConnexionContainer = createElement(
       "overflow-hidden",
       "relative",
     ],
-    vShow: window.location.hostname === "localhost" ? false : true,
+    vShow: window.location.hostname !== "localhost" && !getIsConnected(),
     onSubmit: (e) => {
       e.preventDefault();
 
@@ -200,6 +201,7 @@ export const formConnexionContainer = createElement(
             toSpace();
             setUserId(data.id);
             store(data);
+            setIsConnected(true);
           } else {
             errorOutput.textContent = "Ce numéro n'est pas enregistré !";
           }
