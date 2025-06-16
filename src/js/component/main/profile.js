@@ -1,23 +1,22 @@
+import { updateUserAbout, updateUserName, uploadToImgBB } from "../../services/profile";
+import { getUser } from "../../services/user";
 import { createElement } from "../components";
-import { BASE_IMG } from "../../../../config/config";
 
-const styleIcon = ["cursor-pointer", "text-white", "text-2xl", 'px-1'];
+const styleIcon = ["cursor-pointer", "text-white", "text-2xl", "px-1"];
 
-const icons = [
-    'bi bi-pencil',
-    'bi bi-emoji-neutral',
-    'bi bi-check-lg'
-]
+const icons = ["bi bi-pencil", "bi bi-emoji-neutral", "bi bi-check-lg"];
+
+export const showUsername = createElement(
+  "span",
+  { class: ["text-white", "text-3lg"] },
+  "Le zombie username"
+);
 
 const usernameStatic = createElement(
   "div",
   { class: ["flex", "justify-between"] },
   [
-    createElement(
-      "span",
-      { class: ["text-white", "text-3lg"] },
-      "Le zombie username"
-    ),
+    showUsername,
     createElement("i", {
       class: [icons[0], "text-white", "text-2xl"],
       onclick: () => {
@@ -27,38 +26,48 @@ const usernameStatic = createElement(
   ]
 );
 
+export const showUserValue = createElement("input", {
+  class: [
+    "text-white",
+    "w-full",
+    "p-2",
+    "bg-[#0c1317]",
+    "outline-none",
+    "border-b-2",
+    "border-green-600",
+  ],
+  type: "text",
+});
+
 const usernameInput = createElement(
   "div",
   { class: ["flex", "justify-between", "w-full"] },
   [
-    createElement(
-      "form",
-      { class: ["flex-1"] },
-      createElement("input", {
-        class: [
-          "text-white",
-          "w-full",
-          "p-2",
-          "bg-[#0c1317]",
-          "outline-none",
-          "border-b-2",
-          'border-green-600'
-        ],
-        type: "text",
-      })
-    ),
+    createElement("form", { class: ["flex-1"] }, showUserValue),
     createElement("div", { class: ["flex", "justify-between"] }, [
       createElement("i", {
         class: [icons[1], ...styleIcon],
       }),
       createElement("i", {
         class: [icons[2], ...styleIcon],
+        type: "submit",
         onclick: () => {
-            showUsernameStatic();
+          const value = showUserValue.value;
+          if (value != getUser().name) {
+            showUsername.textContent = value;
+            updateUserName(value);
+          }
+          showUsernameStatic();
         },
       }),
     ]),
   ]
+);
+
+export const showVAbout = createElement(
+  "span",
+  { class: ["text-white", "text-3lg", , "flex", "items-center"] },
+  "About"
 );
 
 const username = createElement("div", {}, usernameStatic);
@@ -67,40 +76,34 @@ const aboutStatic = createElement(
   "div",
   { class: ["flex", "justify-between", "w-full"] },
   [
-    createElement(
-      "span",
-      { class: ["text-white", "text-3lg", , "flex", "items-center"] },
-      "Le zombie username"
-    ),
+    showVAbout,
     createElement("i", {
       class: [icons[0], ...styleIcon],
       onclick: () => {
-            showAboutInput();
-        },
+        showAboutInput();
+      },
     }),
   ]
 );
+
+export const showAboutValue = createElement("input", {
+  class: [
+    "text-white",
+    "w-full",
+    "p-2",
+    "bg-[#0c1317]",
+    "outline-none",
+    "border-b-2",
+    "border-green-600",
+  ],
+  type: "text",
+});
 
 const aboutImput = createElement(
   "div",
   { class: ["flex", "justify-between", "w-full"] },
   [
-    createElement(
-      "form",
-      { class: ["flex-1"] },
-      createElement("input", {
-        class: [
-          "text-white",
-          "w-full",
-          "p-2",
-          "bg-[#0c1317]",
-          "outline-none",
-          "border-b-2",
-          'border-green-600'
-        ],
-        type: "text",
-      })
-    ),
+    createElement("form", { class: ["flex-1"] }, showAboutValue),
     createElement("div", { class: ["flex", "justify-between"] }, [
       createElement("i", {
         class: [icons[1], ...styleIcon],
@@ -108,7 +111,12 @@ const aboutImput = createElement(
       createElement("i", {
         class: [icons[2], ...styleIcon],
         onclick: () => {
-            showAboutStatic();
+          const value = showAboutValue.value;
+          if (value != getUser().about) {
+            showVAbout.textContent = value;
+            updateUserAbout(value);
+          }
+          showAboutStatic();
         },
       }),
     ]),
@@ -117,6 +125,22 @@ const aboutImput = createElement(
 
 const about = createElement("div", {}, aboutStatic);
 
+// const fileInput = createElement("input", {
+//   type: "file",
+//   accept: "image/*",
+//   class: ["hidden"],
+//   onChange: (e) => {
+//     const file = e.target.files[0];
+//     if (file) {
+//       const reader = new FileReader();
+//       reader.onload = () => {
+//         avatarImg.src = reader.result;
+//       };
+//       reader.readAsDataURL(file);
+//     }
+//   },
+// });
+
 const fileInput = createElement("input", {
   type: "file",
   accept: "image/*",
@@ -124,19 +148,22 @@ const fileInput = createElement("input", {
   onChange: (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        avatarImg.src = reader.result;
-      };
-      reader.readAsDataURL(file);
+      uploadToImgBB(file);
     }
   },
 });
 
-const avatarImg = createElement("img", {
+export const avatarImg = createElement("img", {
   src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
   alt: "User Avatar",
-  class: ["rounded-full", "w-80", "h-80", "object-cover", "transition-all", "duration-300"],
+  class: [
+    "rounded-full",
+    "w-80",
+    "h-80",
+    "object-cover",
+    "transition-all",
+    "duration-300",
+  ],
 });
 
 const overlay = createElement(
@@ -222,7 +249,6 @@ export const profile = createElement(
     ]),
   ]
 );
-
 
 function showAboutInput() {
   about.innerHTML = "";

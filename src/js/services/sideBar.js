@@ -15,26 +15,28 @@ import { profile } from "../component/main/profile";
 import { setting } from "../component/main/setting";
 import { styleDescription } from "../component/side-bar/actionsSideBar";
 
-import { renderDiscussionContacts } from "../component/main/lister";
+import { clearCurrentInterval, renderDiscussionContacts } from "../component/main/lister";
 import { discusionVider } from "./discussion";
+import { initProfile } from "./profile";
+import { getUser } from "./user";
 
 export const sideBarActionsTop = [
   {
     icon: "bi bi-house-door",
     index: 0,
-    label: "Accueil",
+    label: "Chats",
     action: [renderDiscussionContacts, renderSidebar, showChats],
   },
   {
     icon: "bi bi-chat-left-text",
     index: 1,
-    label: "Chats",
+    label: "Status",
     action: [showStatus],
   },
   {
     icon: "bi bi-person",
     index: 2,
-    label: "Contacts",
+    label: "Channels",
     action: [showChannels],
   },
   {
@@ -50,9 +52,9 @@ export const sideBarActionsBottom = [
 ];
 
 export const sideBarAvatar = {
-  imageSrc: "https://avatars.githubusercontent.com/u/12345678?v=4",
+  imageSrc: getUser().avatar,
   index: 5,
-  action: [showProfile],
+  action: [showProfile, initProfile],
   label: "Profile",
 };
 
@@ -172,6 +174,7 @@ function handleSidebarClick(index, actions = []) {
   setSelected(index);
   renderSidebar();
   discusionVider();
+  clearCurrentInterval();
 
   if (!Array.isArray(actions)) actions = [actions];
   actions.forEach((fn) => {

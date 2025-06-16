@@ -1,9 +1,10 @@
-import { getConversations, getNormalConversationSummaries } from "./conversations";
+import { getArchivedConversations, getConversations, getGroupDiscussions } from "./conversations";
 import { discussion, discussionChamp, discussionChampContainer, discussionVide} from "../component/main/discussionChamp";
 import { createElement } from "../component/components";
 import { getUsers } from "./user";
 import { CONVERSATION_RESSOURCE, BASE_URL } from "../../../config/config";
 import { getCurrentConversationId } from "../component/main/lister";
+import { ElAvatar, ElMessage, ElName } from "../component/main/discussionChamp";
 
 
 export function setAvatarUser(avatar) {
@@ -16,42 +17,31 @@ export function setLastMessageUser(message) {
   ElMessage.textContent = message;
 }
 
-const ElAvatar = createElement("div", {
-  class: [
-    "rounded-full",
-    "bg-blue-500",
-    "w-16",
-    "h-16",
-    "flex",
-    "justify-center",
-    "items-center",
-  ],
-});
-
-const ElName = createElement("span", {
-  class: ["text-lg", "font-semibold", "text-black"],
-});
-const ElMessage = createElement("span", {
-  class: ["text-sm", "text-gray-600"],
-});
-
 export let selectedDiscussion = {
   contact: null,
   messages: [],
 };
 export function loadDiscussionWith(conversationId, currentUserId = 1) {
-  
-  if (conversationId !== getCurrentConversationId()) {
-    return;
-  }
+  if (conversationId !== getCurrentConversationId()) return;
 
-  const convo = getConversations().find((c) => c.id === conversationId);  
+  const allConvos = [
+    ...getConversations(),
+    ...getGroupDiscussions(),
+    ...getArchivedConversations(),
+  ];
 
+  const convo = allConvos.find((c) => c.id === conversationId);
   if (!convo) {
     selectedDiscussion.messages = [];
     discussionChamp.innerHTML = "";
     return;
   }
+
+  const newMessages = Array.isArray(convo.messages) ? convo.messages : [];
+
+  const oldMessagesStr = JSON.stringify(selectedDiscussion.messages);
+  const newMessagesStr = JSON.stringify(newMessages);
+  if (oldMessagesStr === newMessagesStr) return;
 
   const isAtBottom =
     discussionChamp.scrollHeight - discussionChamp.scrollTop <=
@@ -65,16 +55,10 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
     selectedDiscussion.contact = contact;
   }
 
-  selectedDiscussion.messages = Array.isArray(convo.messages)
-    ? convo.messages
-    : [];
+  selectedDiscussion.messages = newMessages;
 
   discussionChamp.innerHTML = "";
-
-  const messagesNodes = discussionPArt(
-    selectedDiscussion.messages,
-    currentUserId
-  );
+  const messagesNodes = discussionPArt(newMessages, currentUserId);
   messagesNodes.forEach((node) => discussionChamp.appendChild(node));
 
   if (isAtBottom) {
@@ -83,12 +67,9 @@ export function loadDiscussionWith(conversationId, currentUserId = 1) {
 }
 
 
-
 function scrollToBottom(container) {
   container.scrollTop = container.scrollHeight;
 }
-
-
 
 export function discussionPArt(messages = [], currentUserId = 1) {
   if (!Array.isArray(messages)) return [];
@@ -119,7 +100,17 @@ export function discussionPArt(messages = [], currentUserId = 1) {
       );
     }
 
-    return createElement("div", { class: baseClass }, msg.content);
+    
+
+    return createElement("div", { class: baseClass }, [
+      msg.content,
+      createElement("p", {
+        class: [
+          "text-end",
+          'text-xs'
+        ]
+      }, msg.timestamp.slice(11, 16))
+    ]);
   });
 }
 
@@ -128,9 +119,7 @@ export function showMessage(){
   discussion.appendChild(discussionChampContainer);
 }
 
-
-export function sendTextMessage(conversationId, senderId, content) {
-
+export function sendTextMessage(conversationId, senderId, content, type = "text") {
   return fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}/${conversationId}`)
     .then(res => res.json())
     .then(convo => {
@@ -140,7 +129,7 @@ export function sendTextMessage(conversationId, senderId, content) {
         id: messages.length ? messages[messages.length - 1].id + 1 : 1,
         senderId,
         content,
-        type: "text",
+        type,
         timestamp: new Date().toISOString(),
       };
 

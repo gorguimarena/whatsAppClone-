@@ -5,10 +5,14 @@ import { clearCurrentInterval, renderDiscussionContacts } from "../component/mai
 import { setSelected } from "../component/side-bar/actionsSideBar";
 import { discusionVider } from "./discussion";
 import { renderSidebar, showChats } from "./sideBar";
+import { newTeam } from "../component/main/newTeam";
 
+function cleanMain(){
+    main.innerHTML = "";
+}
 
 function chatsToNewChat(){
-    main.innerHTML = "";
+    cleanMain();
     discusionVider();
     main.appendChild(newChats);
 }
@@ -22,4 +26,9 @@ function newChatToChats(){
     showChats();
 }
 
-export { newChatToChats, chatsToNewChat};
+function toNTeam(){
+    cleanMain();
+    main.appendChild(newTeam);
+}
+
+export { newChatToChats, chatsToNewChat, toNTeam};

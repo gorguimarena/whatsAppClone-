@@ -1,6 +1,7 @@
 import { createElement } from "../components";
 import { BASE_IMG } from "../../../../config/config";
 import { disconnected } from "../../services/connect";
+import { getUser } from "../../services/user";
 
 export const styleIconOptions = ["text-white", "text-3xl", "px-6"];
 
@@ -131,13 +132,13 @@ const seeProfile = createElement(
       { class: ["flex", "justify-center", "items-center", "mx-4"] },
       [
         createElement("img", {
-          src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
+          src: getUser().avatar,
           alt: "Profile Picture",
           class: ["rounded-full", "w-20", "h-20", "mr-2"],
         }),
         createElement("div", { class: ["flex", "flex-col", "text-white"] }, [
           createElement("h2", { class: ["text-lg", "font-bold"] }, "Bal"),
-          createElement("p", {}, "+1234567890"),
+          createElement("p", {}, getUser().name),
         ]),
       ]
     ),

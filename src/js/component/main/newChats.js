@@ -1,13 +1,14 @@
 import { createElement } from "../components";
 import { styleIconOptions } from "./setting";
-import { BASE_IMG } from "../../../../config/config";
-import { newChatToChats } from "../../services/setter";
+import { newChatToChats, toNTeam } from "../../services/setter";
 
 const optionsAction = [
   {
     name: "New group",
     icon: "bi bi-person",
-    action: () => {},
+    action: () => {
+      toNTeam();
+    },
   },
   {
     name: "New cummunity",

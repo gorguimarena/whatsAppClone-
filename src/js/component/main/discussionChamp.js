@@ -3,9 +3,12 @@ import { userId } from "./space";
 import { isSelected } from "../side-bar/actionsSideBar";
 import { sendTextMessage } from "../../services/discussion";
 import { loadDiscussionWith } from "../../services/discussion";
+import {
+  handleSelectDocument,
+  handleSelectMedia,
+} from "../../services/optionMenu";
 
-
-const ElAvatar = createElement(
+export const ElAvatar = createElement(
   "div",
   {
     class: [
@@ -23,20 +26,165 @@ const ElAvatar = createElement(
   })
 );
 
-const ElName = createElement(
+export const ElName = createElement(
   "span",
   {
     class: ["text-lg", "font-semibold", "text-white"],
   },
   "Gorgui Marena"
 );
-const ElMessage = createElement(
+export const ElMessage = createElement(
   "span",
   {
     class: ["text-sm", "text-gray-600"],
   },
   "The last message of gorgui"
 );
+
+const messageTextInput = createElement("input", {
+  type: "text",
+  placeholder: "Type your message...",
+  class: [
+    "p-4",
+    "bg-gray-800",
+    "text-white",
+    "rounded-md",
+    "focus:outline-none",
+    "flex-1",
+  ],
+  onInput: (e) => {
+    const content = e.target.value.trim();
+
+    if (content) {
+      iconSender.classList.remove("bi-mic");
+      iconSender.classList.add("bi-send");
+    } else {
+      iconSender.classList.remove("bi-send");
+      iconSender.classList.add("bi-mic");
+    }
+  },
+});
+
+const iconSender = createElement("i", {
+  class: ["bi", "bi-mic", "text-white", "text-3xl", "cursor-pointer"],
+  onclick: () => {
+    const content = messageTextInput.value.trim();
+
+    if (content) {
+      // Envoyer un message texte
+      sendTextMessage(isSelected, userId, content)
+        .then(() => {
+          messageTextInput.value = "";
+          iconSender.classList.remove("bi-send");
+          iconSender.classList.add("bi-mic");
+          loadDiscussionWith(isSelected, userId);
+        })
+        .catch((err) => {
+          console.error("Erreur envoi message texte :", err);
+        });
+    } else {
+      // Lancer l'enregistrement vocal
+      startVoiceRecording(isSelected, userId);
+    }
+  },
+});
+
+const itemsMenu = [
+  {
+    item: "Document",
+    icon: "bi bi-file-earmark-text",
+    action: handleSelectDocument,
+  },
+  {
+    item: "Photos et Vidéos",
+    icon: "bi bi-images",
+    action: handleSelectMedia,
+  },
+  {
+    item: "Camera",
+    icon: "bi bi-camera-video",
+    action: () => {},
+  },
+  {
+    item: "Audio",
+    icon: "bi bi-mic-fill",
+    action: () => {},
+  },
+  {
+    item: "Contacts",
+    icon: "bi bi-person-lines-fill",
+    action: () => {},
+  },
+  {
+    item: "Poll",
+    icon: "bi bi-bar-chart",
+    action: () => {},
+  },
+  {
+    item: "New sticker",
+    icon: "bi bi-sticky-fill",
+    action: () => {},
+  },
+  {
+    item: "Event",
+    icon: "bi bi-calendar-event-fill",
+    action: () => {},
+  },
+];
+
+const dropUpMenu = createElement("div", {
+  class: [
+    "absolute",
+    "grid",
+    "z-50",
+    "p-2",
+    "rounded-lg",
+    "translate-y-[-120%]",
+    "mb-10",
+    "right-1/2",
+    "transform",
+    "translate-x-[100%]",
+    "shadow-lg",
+    "bg-[#222e35]",
+    "w-56",
+    "text-sm",
+    "hidden",
+  ],
+  vFor: {
+    each: itemsMenu,
+    render: (item) => {
+      return createElement(
+        "button",
+        {
+          class: [
+            "flex",
+            "items-center",
+            "gap-3",
+            "p-2",
+            "text-white",
+            "hover:bg-red-600",
+            "rounded",
+            "w-full",
+            "text-left",
+          ],
+          onclick: item.action,
+        },
+        [
+          createElement("i", {
+            class: [item.icon, "text-xl"],
+          }),
+          createElement(
+            "span",
+            {
+              class: ["text-white"],
+            },
+            item.item
+          ),
+        ]
+      );
+    },
+  },
+});
 
 export const discussionChamp = createElement("div", {
   id: "discussion-champ",
@@ -50,6 +198,7 @@ export const discussionChamp = createElement("div", {
     "flex-[10_1%]",
     "overflow-x-hidden",
     "overflow-y-auto",
+    "relative",
   ],
 });
 
@@ -93,73 +242,108 @@ export const discussionVide = createElement(
   ]
 );
 
-const iconSender = createElement("i", {
-  class: ["bi bi-mic", "text-white", "text-3xl"],
-});
+function startVoiceRecording(conversationId, senderId) {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert("Ton navigateur ne supporte pas l'enregistrement audio.");
+    return;
+  }
 
-const messageTextInput = createElement("input", {
-  type: "text",
-  placeholder: "Type your message...",
-  class: [
-    "p-4",
-    "bg-gray-800",
-    "text-white",
-    "rounded-md",
-    "focus:outline-none",
-    "flex-1",
-  ],
-});
+  navigator.mediaDevices
+    .getUserMedia({ audio: true })
+    .then((stream) => {
+      const recorder = new MediaRecorder(stream);
+      const chunks = [];
+
+      recorder.ondataavailable = (e) => chunks.push(e.data);
+
+      recorder.onstop = () => {
+        const blob = new Blob(chunks, { type: "audio/webm" });
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+          const base64Audio = reader.result;
+
+          sendTextMessage(conversationId, senderId, base64Audio, "audio")
+            .then(() => {
+              loadDiscussionWith(conversationId, senderId);
+            })
+            .catch((err) => {
+              console.error("Erreur d'envoi du message vocal :", err);
+            });
+        };
+
+        reader.readAsDataURL(blob);
+      };
+
+      recorder.start();
+
+      setTimeout(() => recorder.stop(), 5000);
+    })
+    .catch((err) => {
+      console.error("Erreur d'accès au micro :", err);
+      alert("Impossible d'accéder au micro.");
+    });
+}
 
 const messageForm = createElement(
-  "form",
+  "div",
   {
-    class: [
-      "w-full",
-      "flex-[1_1_0%]",
-      "p-3",
-      "gap-2",
-      "bg-[#222e35]",
-      "flex",
-      "items-center",
-    ],
-    onsubmit: (e) => {
-      e.preventDefault();
-      const content = messageTextInput.value.trim();
-      if (!content ) return;
-
-      if(!navigator.onLine) {
-        alert("You are offline. Please check your internet connection.");
-        return;
-      }
-
-      sendTextMessage(isSelected, userId, content)
-        .then(() => {
-          messageTextInput.value = "";
-          loadDiscussionWith(isSelected, userId);
-        })
-        .catch((err) => {
-          console.error("Erreur lors de l'envoi du message :", err);
-        });
-    },
+    class: ["w-full", "p-3", "gap-2", "bg-[#222e35]", "flex", "items-center"],
   },
   [
     createElement(
       "div",
       {
-        class: ["text-white", "rounded-md", "hover:bg-blue-600", "p-2"],
+        class: ["text-white", "rounded-md", "p-2"],
       },
-      createElement("i", {
-        class: ["bi bi-plus", "text-white", "text-3xl"],
-      })
+      createElement(
+        "i",
+        {
+          class: ["bi bi-plus", "text-white", "text-3xl", "relative"],
+          onclick: () => {
+            dropUpMenu.classList.toggle("hidden");
+          },
+        },
+        dropUpMenu
+      )
     ),
-    messageTextInput,
     createElement(
-      "button",
+      "form",
       {
-        class: ["text-white", "rounded-md", "hover:bg-blue-600", "p-2"],
-        type: "submit",
+        onsubmit: (e) => {
+          e.preventDefault();
+          const content = messageTextInput.value.trim();
+          if (!content) return;
+
+          if (!navigator.onLine) {
+            alert("You are offline. Please check your internet connection.");
+            return;
+          }
+
+          sendTextMessage(isSelected, userId, content)
+            .then(() => {
+              messageTextInput.value = "";
+              iconSender.classList.remove("bi-send");
+              iconSender.classList.add("bi-mic");
+              loadDiscussionWith(isSelected, userId);
+            })
+            .catch((err) => {
+              console.error("Erreur lors de l'envoi du message :", err);
+            });
+        },
+        class: ["flex-[1_1_0%]", "flex"],
       },
-      iconSender
+      [
+        messageTextInput,
+        createElement(
+          "button",
+          {
+            class: ["text-white", "rounded-md", "p-2"],
+            type: "submit",
+          },
+          iconSender
+        ),
+      ]
     ),
   ]
 );
@@ -176,9 +360,6 @@ export const discussionChampContainer = createElement(
       "items-center",
       "gap-2",
     ],
-    onLoad: () => {
-      setChampDiscussion();
-    },
   },
   [
     createElement(
@@ -273,5 +454,3 @@ function setChampDiscussion() {
     )
   );
 }
-
-

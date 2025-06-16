@@ -1,6 +1,6 @@
 export async function createGroupConversation(groupName, participantIds, currentUserId) {
   const newConversation = {
-    name: groupName,
+    nameTeam: groupName,
     participants: participantIds.map(Number), 
     isGroup: true,
     isArchived: false,

@@ -5,6 +5,7 @@ import { chats } from "./chats";
 import { status } from "./status";
 import { channels } from "./channels";
 import { newChats } from "./newChats";
+import { newTeam } from "./newTeam";
 
 
 
@@ -18,5 +19,5 @@ export const main = createElement(
       e.preventDefault();
     },
   },
-  window.location.hostname == "localhost" ? newChats : chats
+  window.location.hostname == "localhost" ? chats : chats
 );

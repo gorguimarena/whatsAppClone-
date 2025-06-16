@@ -57,10 +57,9 @@ export function getNormalConversationSummaries(userId) {
 export function getGroupConversationSummaries(userId) {
   const groupConversations = JSON.parse(
     localStorage.getItem("groupDiscussions") || "[]"
-  );
+  );  
 
   return groupConversations
-    .filter((conv) => conv.participants.includes(userId))
     .map((conv) => formatConversationSummary(conv, userId));
 }
 
@@ -70,17 +69,24 @@ export function getArchivedConversationSummaries(userId) {
   );
 
   return archivedConversations
-    .filter((conv) => conv.participants.includes(userId))
+    .filter((conv) => conv.participants.includes(Number(userId)))
     .map((conv) => formatConversationSummary(conv, userId));
 }
 
 function formatConversationSummary(conv, userId) {
   const lastMessage = conv.messages?.[conv.messages.length - 1] || {};
 
+  let preview;
+  if (lastMessage.type === "audio" || lastMessage.type === "voice") {
+    preview = "Vocal";
+  } else {
+    preview = lastMessage.content || "";
+  }
+
   return {
     id: conv.id,
     name: getConversationName(conv, userId),
-    lastMessage: lastMessage.content || "",
+    lastMessage: preview,
     date: lastMessage.timestamp ? lastMessage.timestamp.slice(11, 16) : "",
     participants: conv.participants,
     isGroup: !!conv.isGroup,
@@ -89,29 +95,22 @@ function formatConversationSummary(conv, userId) {
 }
 
 function getConversationName(conv, userId) {
-  if (conv.isGroup && conv.name) return conv.name;
+  if (conv.isGroup && conv.nameTeam) {
+    return conv.nameTeam;
+  }
 
-  const users = getUsers();
-
-  console.log("users", users);
-  
-
+  const users = getUsers();  
   const otherId = conv.participants.find((id) => id != userId);
-
   const otherUser = users.find((user) => String(user.id) === String(otherId));
 
   return otherUser ? otherUser.name : "Inconnu";
 }
 
+
 export function filterAndStoreConversationsByUserId(conversations, userId) {
   const userConversations = conversations.filter(conv =>
   conv.participants.includes(Number(userId))
 );
-
-
-
-  console.log("userId =", userId, typeof userId);
-  console.log("Participants types :", conversations.map(c => c.participants.map(p => typeof p)));
 
 
   const archived = [];
@@ -126,6 +125,7 @@ export function filterAndStoreConversationsByUserId(conversations, userId) {
     } else {
       normal.push(conv);
     }
+    
   });
 
   storeConversations(normal);

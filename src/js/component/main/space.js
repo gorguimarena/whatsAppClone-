@@ -5,12 +5,16 @@ import { discussion } from "./discussionChamp";
 import { getConversationsToServer, getUsersWithPrivateConversations } from "../../services/getters";
 import { getIsConnected } from "../../services/connect";
 
-
-export let userId = window.location.hostname === "localhost" ? 5 : null;
+export function getUserId(){
+  return localStorage.getItem('userId') || null;
+}
 
 export function setUserId(id) {
-  userId = id;
+  localStorage.setItem('userId', JSON.stringify(id));
 }
+
+export let userId = window.location.hostname === "localhost" ? 5 : getUserId();
+
 
 export const space = createElement(
   "div",

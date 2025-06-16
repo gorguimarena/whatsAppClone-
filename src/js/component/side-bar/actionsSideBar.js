@@ -13,6 +13,8 @@ import {
 } from "../../services/sideBar";
 import { renderDiscussionContacts } from "../main/lister";
 import { discusionVider } from "../../services/discussion";
+import { initProfile } from "../../services/profile";
+import { getUser } from "../../services/user";
 
 
 export const styleDescription = [
@@ -212,11 +214,12 @@ export const avatar = createElement(
       renderSidebar();
       discusionVider();
       showProfile();
+      initProfile();
     },
   },
   [
     createElement("img", {
-    src: `https://avatars.githubusercontent.com/u/12345678?v=4`,
+    src: getUser().avatar,
     alt: "User Avatar",
     class: ["rounded-full"],
   }),

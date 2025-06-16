@@ -1,17 +1,38 @@
 import { chatsToNewChat } from "../../services/setter";
 import { createElement } from "../components";
-
+import { renderDiscussionContacts, renderGroupDiscussions } from "./lister";
 const listDisplay = [
-    'All', 'Unread', 'Favorites', 'Groups'
-]
-
-export const discussionContactsContainer = createElement(
-  "div",
   {
-    id: "discussion-contacts-container",
-    class: ["w-full", "flex", "flex-col"],
-  }
-);
+    label: "All",
+    action: () => {
+      renderDiscussionContacts();
+    },
+  },
+  {
+    label: "Unread",
+    action: () => {
+      console.log("Afficher les messages non lus");
+    },
+  },
+  {
+    label: "Favorites",
+    action: () => {
+      console.log("Afficher les messages favoris");
+    },
+  },
+  {
+    label: "Groups",
+    action: () => {
+      renderGroupDiscussions();
+    },
+  },
+];
+
+
+export const discussionContactsContainer = createElement("div", {
+  id: "discussion-contacts-container",
+  class: ["w-full", "flex", "flex-col"],
+});
 
 const inputSearch = createElement("input", {
   class: [
@@ -26,6 +47,48 @@ const inputSearch = createElement("input", {
   ],
   placeholder: "Rechercher un utilisateur par nom ou numéro",
   type: "text",
+});
+
+const menuItems = [
+  { label: "New Group", onClick: () => {} },
+  { label: "Select Chat", onClick: () => {} },
+  { label: "Starred Messages", onClick: () => {} },
+  { label: "Log Out", onClick: () => {} },
+];
+
+const dropdownMenu = createElement("div", {
+  class: [
+    "absolute",
+    "right-full",
+    "top-8",
+    "rounded",
+    "shadow-lg",
+    "p-2",
+    "z-50",
+    "w-52",
+    "bg-[#222e35]",
+    "grid",
+    'hidden'
+    
+  ],
+  vFor: {
+    each: menuItems,
+    render: (item) => {
+      return createElement(
+        "span",
+        {
+          class: [
+            "p-1",
+            "cursor-pointer",
+            "rounded",
+            "text-sm",
+            "bg-[#222e35]"
+          ],
+        },
+        item.label
+      );
+    },
+  },
 });
 
 export const chats = createElement(
@@ -72,19 +135,29 @@ export const chats = createElement(
                     "text-2xl",
                     "cursor-pointer",
                   ],
-                  onclick: ()=>{
+                  onclick: () => {
                     chatsToNewChat();
-                  }
+                  },
                 }),
-                createElement("i", {
-                  class: [
-                    "bi bi-three-dots-vertical",
-                    "text-white",
-                    "text-2xl",
-                    "cursor-pointer",
-                    "ml-2",
-                  ],
-                }),
+                createElement(
+                  "i",
+                  {
+                    class: [
+                      "bi bi-three-dots-vertical",
+                      "text-white",
+                      "text-2xl",
+                      "cursor-pointer",
+                      "ml-2",
+                      "relative",
+                    ],
+                    onclick: ()=> {
+                      dropdownMenu.classList.toggle('hidden')
+                    }
+                  },
+                  [
+                    dropdownMenu
+                  ]
+                ),
               ]
             ),
           ]
@@ -98,31 +171,31 @@ export const chats = createElement(
         ),
       ]
     ),
-    createElement('div',{
-        class: ["w-96", "flex", "justify-between", "items-center", 'gap-0'],
-        vFor: {
-            each: listDisplay,
-            render: (item) =>
-                createElement(
-                "button",
-                {
-                    class: [
-                    "py-2",
-                    "text-left",
-                    "bg-[#222e35]",
-                    "rounded-full",
-                    "text-white",
-                    "hover:bg-[#2c3a45]",
-                    'px-5',
-                    ],
-                    onclick: () => {
-                    console.log(`Clicked on ${item}`);
-                    },
-                },
-                item
-                ),
-        }
+    createElement("div", {
+      class: ["w-96", "flex", "justify-between", "items-center", "gap-0"],
+      vFor: {
+        each: listDisplay,
+        render: (item) =>
+          createElement(
+            "button",
+            {
+              class: [
+                "py-2",
+                "text-left",
+                "bg-[#222e35]",
+                "rounded-full",
+                "text-white",
+                "hover:bg-[#2c3a45]",
+                "px-5",
+              ],
+              onclick: item.action,
+            },
+            item.label
+          ),
+      },
     }),
     discussionContactsContainer,
   ]
 );
+
+
