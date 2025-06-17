@@ -1,11 +1,29 @@
-import { getArchivedConversations } from "../../services/conversations";
+import { getArchivedConversations, getArchivedConversationSummaries, getGroupConversationSummaries, getNormalConversationSummaries } from "../../services/conversations";
 import { chatsToNewChat } from "../../services/setter";
 import { createElement } from "../components";
-import { renderArchivedDiscussions, renderDiscussionContacts, renderGroupDiscussions } from "./lister";
+import { createContactItem, renderArchivedDiscussions, renderDiscussionContacts, renderGroupDiscussions } from "./lister";
+import { userId } from "./space";
+
+export const inputSearch = createElement("input", {
+  class: [
+    "w-full",
+    "bg-[#222e35]",
+    "border-none",
+    "outline-none",
+    "rounded-md",
+    "p-2",
+    "mt-2",
+    "text-white",
+  ],
+  placeholder: "Rechercher un utilisateur par nom ou numéro",
+  type: "text",
+});
+
 const listDisplay = [
   {
     label: "All",
     action: () => {
+      setupContactSearch(inputSearch,'normal');
       renderDiscussionContacts();
     },
   },
@@ -24,6 +42,7 @@ const listDisplay = [
   {
     label: "Groups",
     action: () => {
+      setupContactSearch(inputSearch, 'group');
       renderGroupDiscussions();
     },
   },
@@ -34,20 +53,45 @@ export const discussionContactsContainer = createElement("div", {
   class: ["w-full", "flex", "flex-col"],
 });
 
-const inputSearch = createElement("input", {
-  class: [
-    "w-full",
-    "bg-[#222e35]",
-    "border-none",
-    "outline-none",
-    "rounded-md",
-    "p-2",
-    "mt-2",
-    "text-white",
-  ],
-  placeholder: "Rechercher un utilisateur par nom ou numéro",
-  type: "text",
-});
+
+
+let currentSearchType = "normal";
+
+export function setupContactSearch(inputEl, type = "normal") {
+  currentSearchType = type;
+
+  if (!inputEl.dataset.listenerAttached) {
+    inputEl.addEventListener("input", () => {
+      const searchTerm = inputEl.value.toLowerCase();
+      let list = [];
+
+      if (currentSearchType === "normal") {
+        list = getNormalConversationSummaries(userId);
+      } else if (currentSearchType === "group") {
+        list = getGroupConversationSummaries(userId);
+      } else if (currentSearchType === "archived") {
+        list = getArchivedConversationSummaries(userId);
+      }
+
+      const filtered = list.filter((conv) => {
+        return (
+          conv.name?.toLowerCase().includes(searchTerm) ||
+          conv.phone?.toLowerCase().includes(searchTerm)
+        );
+      });
+
+      discussionContactsContainer.innerHTML = "";
+      filtered.map(createContactItem).forEach((el) => {
+        discussionContactsContainer.appendChild(el);
+      });
+    });
+
+    // Marquer qu’un listener est déjà attaché
+    inputEl.dataset.listenerAttached = "true";
+  }
+}
+
+
 
 const menuItems = [
   { label: "New Group", onClick: () => {} },

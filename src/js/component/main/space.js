@@ -4,6 +4,7 @@ import { main } from "./listdispaly";
 import { discussion } from "./discussionChamp";
 import { getConversationsToServer, getUsersWithPrivateConversations } from "../../services/getters";
 import { getIsConnected } from "../../services/connect";
+import { statusTextInput } from "./status";
 
 export function getUserId(){
   return localStorage.getItem('userId') || null;
@@ -32,6 +33,7 @@ export const space = createElement(
     sideBar,
     main,
     discussion,
+    statusTextInput
   ]
 );
 

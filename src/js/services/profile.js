@@ -89,7 +89,7 @@ export function uploadToImgBB(file) {
   const formData = new FormData();
   formData.append("image", file);
 
-  fetch(`https://api.imgbb.com/1/upload?key=${KEY_IMGBB}`, {
+  return fetch(`https://api.imgbb.com/1/upload?key=${KEY_IMGBB}`, {
     method: "POST",
     body: formData,
   })
@@ -97,11 +97,13 @@ export function uploadToImgBB(file) {
     .then((data) => {
       const imageUrl = data.data.url;
 
-      console.log(imageUrl);
-      
+      console.log("Image uploadée :", imageUrl);
       avatarImg.src = imageUrl;
 
-      updateUserAvatar(imageUrl);
+      return imageUrl; 
     })
-    .catch((err) => console.error("Erreur upload ImgBB:", err));
+    .catch((err) => {
+      console.error("Erreur upload ImgBB:", err);
+      throw err; 
+    });
 }

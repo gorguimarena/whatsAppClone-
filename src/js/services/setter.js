@@ -1,5 +1,4 @@
-import { newChats } from "../component/main/newChats";
-import { chats } from "../component/main/chats";
+import { newChats, renderUsersList, setupUserSearch } from "../component/main/newChats";
 import { main } from "../component/main/listdispaly";
 import { clearCurrentInterval, renderDiscussionContacts } from "../component/main/lister";
 import { setSelected } from "../component/side-bar/actionsSideBar";
@@ -11,11 +10,14 @@ function cleanMain(){
     main.innerHTML = "";
 }
 
-function chatsToNewChat(){
-    cleanMain();
-    discusionVider();
-    main.appendChild(newChats);
+function chatsToNewChat() {
+  cleanMain();
+  discusionVider();
+  renderUsersList(); 
+  setupUserSearch(); 
+  main.appendChild(newChats);
 }
+
 
 function newChatToChats(){
     setSelected(0);

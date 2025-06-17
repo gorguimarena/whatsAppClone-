@@ -92,116 +92,8 @@
           "senderId": 2,
           "content": "Avec plaisir, dis-moi quand !",
           "timestamp": "2025-05-30T10:31:59.828Z"
-        },
-        {
-          "id": 15,
-          "senderId": 5,
-          "content": "Quand tu veux, on s'appelle ?",
-          "timestamp": "2025-05-30T10:31:59.828Z"
-        },
-        {
-          "id": 16,
-          "senderId": 5,
-          "content": "Merci pour ton aide !",
-          "timestamp": "2025-05-30T11:31:59.828Z"
-        },
-        {
-          "id": 17,
-          "senderId": 2,
-          "content": "Super ! Tu me montres ?",
-          "timestamp": "2025-05-30T11:31:59.828Z"
-        },
-        {
-          "id": 18,
-          "senderId": 5,
-          "content": "Salut",
-          "type": "text",
-          "timestamp": "2025-06-12T09:03:44.245Z"
-        },
-        {
-          "id": 19,
-          "senderId": 5,
-          "content": "Commnent tu vas",
-          "type": "text",
-          "timestamp": "2025-06-12T09:04:10.764Z"
-        },
-        {
-          "id": 20,
-          "senderId": 5,
-          "content": "Ca vas",
-          "type": "text",
-          "timestamp": "2025-06-12T12:58:19.943Z"
-        },
-        {
-          "id": 21,
-          "senderId": 5,
-          "content": "Tu vas mieux maintenant",
-          "type": "text",
-          "timestamp": "2025-06-12T13:04:27.870Z"
-        },
-        {
-          "id": 22,
-          "senderId": 5,
-          "content": "Salut",
-          "type": "text",
-          "timestamp": "2025-06-12T18:36:49.304Z"
-        },
-        {
-          "id": 23,
-          "senderId": 5,
-          "content": "Tu vas bien",
-          "type": "text",
-          "timestamp": "2025-06-12T18:48:22.144Z"
-        },
-        {
-          "id": 24,
-          "senderId": 5,
-          "content": "Salut les gars",
-          "type": "text",
-          "timestamp": "2025-06-13T13:16:55.374Z"
-        },
-        {
-          "id": 25,
-          "senderId": 5,
-          "content": "Reponse moi please",
-          "type": "text",
-          "timestamp": "2025-06-13T15:16:31.374Z"
-        },
-        {
-          "id": 26,
-          "senderId": 5,
-          "content": "Salut",
-          "type": "text",
-          "timestamp": "2025-06-16T12:34:53.939Z"
-        },
-        {
-          "id": 27,
-          "senderId": 5,
-          "content": "Salut",
-          "type": "text",
-          "timestamp": "2025-06-16T17:52:16.095Z"
-        },
-        {
-          "id": 28,
-          "senderId": 5,
-          "content": "Yangui nos",
-          "type": "text",
-          "timestamp": "2025-06-16T17:52:27.432Z"
-        },
-        {
-          "id": 29,
-          "senderId": 5,
-          "content": "Et de ton cote",
-          "type": "text",
-          "timestamp": "2025-06-16T17:52:40.753Z"
-        },
-        {
-          "id": 30,
-          "senderId": 5,
-          "content": "Bro",
-          "type": "text",
-          "timestamp": "2025-06-17T10:21:17.162Z"
         }
+      
       ]
     },
     {
@@ -401,7 +293,7 @@
       "phone": "+221771234567",
       "avatar": "https://randomuser.me/api/portraits/women/1.jpg",
       "lastSeen": "2025-06-05T13:45:00Z",
-      "about": ""
+      "about": "I'm here"
     },
     {
       "id": "2",
@@ -409,7 +301,7 @@
       "phone": "+221781112233",
       "avatar": "https://randomuser.me/api/portraits/men/2.jpg",
       "lastSeen": "2025-06-05T12:30:00Z",
-      "about": ""
+      "about": "I'm here"
     },
     {
       "id": "3",
@@ -417,7 +309,7 @@
       "phone": "+221766543210",
       "avatar": "https://randomuser.me/api/portraits/women/3.jpg",
       "lastSeen": "2025-06-05T08:20:00Z",
-      "about": ""
+      "about": "I'm here"
     },
     {
       "id": "4",
@@ -425,7 +317,7 @@
       "phone": "+221701112244",
       "avatar": "https://randomuser.me/api/portraits/men/4.jpg",
       "lastSeen": null,
-      "about": ""
+      "about": "I'm here"
     },
     {
       "id": "5",
@@ -439,6 +331,7 @@
   "statuses": [
     {
       "userId": 2,
+      "id": "f0fd",
       "updatedAt": "2025-06-05T10:00:00Z",
       "content": [
         {
@@ -447,14 +340,68 @@
         },
         {
           "type": "image",
-          "value": "https://example.com/status1.jpg"
+          "value": "https://i.ibb.co/jvkfLF2z/affiche.png"
         },
         {
-          "type": "video",
-          "value": "https://example.com/status2.mp4"
+          "type": "image",
+          "value": "https://i.ibb.co/jvkfLF2z/affiche.png"
         }
-      ],
-      "id": "f0fd"
+      ]
+    },
+    {
+      "id": "066cf743-4b9d-4a8e-a579-e164671c061b",
+      "updatedAt": "2025-06-17T11:54:36.349Z",
+      "userId": 5,
+      "content": [
+        {
+          "type": "image",
+          "value": "https://i.ibb.co/jvkfLF2z/affiche.png"
+        }
+      ]
+    },
+    {
+      "id": "cb6baadf-fcba-412e-84e6-4eaa01cf5a23",
+      "userId": 5,
+      "updatedAt": "2025-06-17T13:31:18.504Z",
+      "content": [
+        {
+          "type": "text",
+          "value": "Salut"
+        }
+      ]
+    },
+    {
+      "id": "1acead2e-e3e7-46c5-88ab-da677e421b45",
+      "userId": 5,
+      "updatedAt": "2025-06-17T13:32:39.884Z",
+      "content": [
+        {
+          "type": "text",
+          "value": "Text Status"
+        }
+      ]
+    },
+    {
+      "id": "295281d1-4228-4775-8189-833ebcc28c47",
+      "userId": 5,
+      "updatedAt": "2025-06-17T13:32:47.468Z",
+      "content": [
+        {
+          "type": "text",
+          "value": "Ste"
+        }
+      ]
+    },
+    {
+      "id": "7b6ff162-8db5-4e1a-8797-6821437c8f46",
+      "userId": 5,
+      "updatedAt": "2025-06-17T15:18:26.479Z",
+      "content": [
+        {
+          "type": "text",
+          "value": "Les gard j'ai fait le status"
+        }
+      ]
     }
   ]
 }

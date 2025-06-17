@@ -15,6 +15,9 @@ import { renderDiscussionContacts } from "../main/lister";
 import { discusionVider } from "../../services/discussion";
 import { initProfile } from "../../services/profile";
 import { getUser } from "../../services/user";
+import { renderStatusesFromServer } from "../main/status";
+import { userId } from "../main/space";
+import { inputSearch, setupContactSearch } from "../main/chats";
 
 
 export const styleDescription = [
@@ -38,6 +41,7 @@ export const styleDescription = [
   "duration-200",
   "z-10",
   "shadow-lg",
+  "pointer-events-none",
 ];
 
 export const styleContainer = [
@@ -75,6 +79,7 @@ export const chats = createElement(
     onClick: () => {
       isSelected = sideBarActionsTop[0].index;
       renderDiscussionContacts();
+      setupContactSearch(inputSearch, 'normal');
       discusionVider();
       renderSidebar();
       showChats();      
@@ -103,6 +108,7 @@ export const status = createElement(
     ],
     onClick: () => {
       isSelected = sideBarActionsTop[1].index;
+      renderStatusesFromServer();
       renderSidebar();
       discusionVider();
       showStatus();
@@ -219,7 +225,7 @@ export const avatar = createElement(
   },
   [
     createElement("img", {
-    src: getUser().avatar,
+    src: getUser()?.avatar || '',
     alt: "User Avatar",
     class: ["rounded-full"],
   }),

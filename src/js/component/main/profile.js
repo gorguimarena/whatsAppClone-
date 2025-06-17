@@ -1,4 +1,9 @@
-import { updateUserAbout, updateUserName, uploadToImgBB } from "../../services/profile";
+import {
+  updateUserAbout,
+  updateUserAvatar,
+  updateUserName,
+  uploadToImgBB,
+} from "../../services/profile";
 import { getUser } from "../../services/user";
 import { createElement } from "../components";
 
@@ -148,7 +153,13 @@ const fileInput = createElement("input", {
   onChange: (e) => {
     const file = e.target.files[0];
     if (file) {
-      uploadToImgBB(file);
+      uploadToImgBB(file)
+        .then((imageUrl) => {
+          updateUserAvatar(imageUrl);
+        })
+        .catch((err) => {
+          console.error("Erreur pendant l’upload ou la mise à jour :", err);
+        });
     }
   },
 });

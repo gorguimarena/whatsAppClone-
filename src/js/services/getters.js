@@ -1,7 +1,10 @@
-import { BASE_URL, CONVERSATION_RESSOURCE, USERS_RESSOURCE } from "../../../config/config";
+import {
+  BASE_URL,
+  CONVERSATION_RESSOURCE,
+  USERS_RESSOURCE,
+} from "../../../config/config";
 import { filterAndStoreConversationsByUserId } from "./conversations";
 import { storeUsers } from "./user";
-
 
 // export function getGroupDiscussions(currentUserId = 1, conversations) {
 //   return conversations
@@ -74,69 +77,75 @@ import { storeUsers } from "./user";
 //     });
 // }
 
-let  isFetching = false;
+let isFetching = false;
 
 export function getConversationsToServer(userId) {
   if (isFetching || userId === null) return;
   isFetching = true;
 
   fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}`)
-    .then(res => res.json())
-    .then(data => {
-      
+    .then((res) => res.json())
+    .then((data) => {
       filterAndStoreConversationsByUserId(data, userId);
       console.log("Conversations mises à jour", userId);
     })
-    .catch(err => console.error(err))
+    .catch((err) => console.error(err))
     .finally(() => {
       isFetching = false;
     });
 }
 
 let isFetchingUsers = false;
+const otherUserIds = new Set();
 
 export function getUsersWithPrivateConversations(userId) {
   if (isFetchingUsers || userId === null) return;
   isFetchingUsers = true;
 
   fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}`)
-    .then(res => res.json())
-    .then(conversations => {
+    .then((res) => res.json())
+    .then((conversations) => {
+      // Récupérer les conversations privées de l'utilisateur
       const privateConvos = conversations.filter(
-        conv => !conv.isGroup && conv.participants.includes(Number(userId))
+        (conv) =>
+          !conv.isGroup && conv.participants.includes(Number(userId))
       );
 
-      const otherUserIds = new Set();
-      privateConvos.forEach(conv => {
-        conv.participants.forEach(id => {
-          if (id != userId) otherUserIds.add(id);
+      // Extraire les ID des autres participants
+      privateConvos.forEach((conv) => {
+        conv.participants.forEach((id) => {
+          if (id !== userId) otherUserIds.add(id);
         });
       });
 
+      // Si aucun utilisateur trouvé, on vide
       if (otherUserIds.size === 0) {
         storeUsers([]);
         return;
       }
 
-      const query = Array.from(otherUserIds)
-        .map(id => `id=${id}`)
-        .join("&");
-
-      return fetch(`${BASE_URL}/${USERS_RESSOURCE}?${query}`);
+      return fetch(`${BASE_URL}/${USERS_RESSOURCE}`);
     })
-    .then(res => res?.json?.())
-    .then(users => {
+    .then((res) => res?.json?.())
+    .then((users) => {
       if (users) {
-        storeUsers(users);
+        // Filtrer uniquement ceux présents dans otherUserIds
+        const filteredUsers = users.filter((u) =>
+          otherUserIds.has(Number(u.id))
+        );
+
+        storeUsers(filteredUsers);
         console.log("Utilisateurs privés en relation stockés !");
       }
     })
-    .catch(err => console.error("Erreur lors de la récupération des utilisateurs privés :", err))
+    .catch((err) =>
+      console.error(
+        "Erreur lors de la récupération des utilisateurs privés :",
+        err
+      )
+    )
     .finally(() => {
       isFetchingUsers = false;
     });
 }
-
-
-
 

@@ -9,8 +9,8 @@ import {
 } from "../component/side-bar/actionsSideBar";
 import { main } from "../component/main/listdispaly";
 import { channels } from "../component/main/channels";
-import { chats } from "../component/main/chats";
-import { status } from "../component/main/status";
+import { chats, inputSearch, setupContactSearch } from "../component/main/chats";
+import { renderStatusesFromServer, status } from "../component/main/status";
 import { profile } from "../component/main/profile";
 import { setting } from "../component/main/setting";
 import { styleDescription } from "../component/side-bar/actionsSideBar";
@@ -25,13 +25,13 @@ export const sideBarActionsTop = [
     icon: "bi bi-house-door",
     index: 0,
     label: "Chats",
-    action: [renderDiscussionContacts, renderSidebar, showChats],
+    action: [renderDiscussionContacts, renderSidebar, showChats, () => setupContactSearch(inputSearch, "normal")],
   },
   {
     icon: "bi bi-chat-left-text",
     index: 1,
     label: "Status",
-    action: [showStatus],
+    action: [showStatus, renderStatusesFromServer],
   },
   {
     icon: "bi bi-person",
@@ -52,7 +52,7 @@ export const sideBarActionsBottom = [
 ];
 
 export const sideBarAvatar = {
-  imageSrc: getUser().avatar,
+  imageSrc: getUser()?.avatar || 'source',
   index: 5,
   action: [showProfile, initProfile],
   label: "Profile",
