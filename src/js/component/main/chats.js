@@ -1,6 +1,7 @@
+import { getArchivedConversations } from "../../services/conversations";
 import { chatsToNewChat } from "../../services/setter";
 import { createElement } from "../components";
-import { renderDiscussionContacts, renderGroupDiscussions } from "./lister";
+import { renderArchivedDiscussions, renderDiscussionContacts, renderGroupDiscussions } from "./lister";
 const listDisplay = [
   {
     label: "All",
@@ -27,7 +28,6 @@ const listDisplay = [
     },
   },
 ];
-
 
 export const discussionContactsContainer = createElement("div", {
   id: "discussion-contacts-container",
@@ -68,8 +68,7 @@ const dropdownMenu = createElement("div", {
     "w-52",
     "bg-[#222e35]",
     "grid",
-    'hidden'
-    
+    "hidden",
   ],
   vFor: {
     each: menuItems,
@@ -82,7 +81,7 @@ const dropdownMenu = createElement("div", {
             "cursor-pointer",
             "rounded",
             "text-sm",
-            "bg-[#222e35]"
+            "bg-[#222e35]",
           ],
         },
         item.label
@@ -150,13 +149,11 @@ export const chats = createElement(
                       "ml-2",
                       "relative",
                     ],
-                    onclick: ()=> {
-                      dropdownMenu.classList.toggle('hidden')
-                    }
+                    onclick: () => {
+                      dropdownMenu.classList.toggle("hidden");
+                    },
                   },
-                  [
-                    dropdownMenu
-                  ]
+                  [dropdownMenu]
                 ),
               ]
             ),
@@ -194,8 +191,21 @@ export const chats = createElement(
           ),
       },
     }),
+    createElement(
+      "div",
+      {
+        class: ["flex", "gap-4", "p-4", "text-white", "text-2xl", 'cursor-pointer'],
+        onclick: ()=> {
+          renderArchivedDiscussions();
+        }
+      },
+      [
+        createElement("i", {
+          class: ["bi bi-archive", ],
+        }),
+        createElement("span", {}, "Archive"),
+      ]
+    ),
     discussionContactsContainer,
   ]
 );
-
-

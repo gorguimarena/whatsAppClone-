@@ -7,7 +7,7 @@
         2
       ],
       "isGroup": false,
-      "isArchived": true,
+      "isArchived": false,
       "messages": [
         {
           "id": 1,
@@ -194,6 +194,13 @@
           "content": "Et de ton cote",
           "type": "text",
           "timestamp": "2025-06-16T17:52:40.753Z"
+        },
+        {
+          "id": 30,
+          "senderId": 5,
+          "content": "Bro",
+          "type": "text",
+          "timestamp": "2025-06-17T10:21:17.162Z"
         }
       ]
     },
@@ -204,7 +211,7 @@
         5
       ],
       "isGroup": false,
-      "isArchived": true,
+      "isArchived": false,
       "messages": [
         {
           "id": 18,
@@ -272,7 +279,7 @@
         1,
         4
       ],
-      "isArchived": true,
+      "isArchived": false,
       "messages": [
         {
           "id": 24,
@@ -426,7 +433,7 @@
       "phone": "+221772345678",
       "avatar": "https://i.ibb.co/0VrHF9vX/affiche.png",
       "lastSeen": "2025-06-04T23:50:00Z",
-      "about": "about you 2"
+      "about": "La vie est si dure que la mort rit !"
     }
   ],
   "statuses": [

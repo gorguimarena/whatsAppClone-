@@ -124,12 +124,12 @@ function createContactItem(item) {
             toggleArchive(item.id, shouldArchive).then(() => {
               if (shouldArchive) {
                 if (item.isGroup) {
-                  renderGroupDiscussions(userId);
+                  renderGroupDiscussions();
                 } else {
                   renderDiscussionContacts();
                 }
               } else {
-                renderArchivedDiscussions(userId);
+                renderArchivedDiscussions();
               }
             });
           },
@@ -147,6 +147,7 @@ function createContactItem(item) {
       "hidden", 
       "group-hover:block",
       "cursor-pointer",
+      "mt-5"
     ],
     onclick: (e) => {
       e.stopPropagation();
@@ -266,9 +267,14 @@ function renderEmptyStateIfNeeded(list, type = "discussion") {
       ],
     }, message);
 
+    console.log('Vide');
+    
     discussionContactsContainer.appendChild(emptyMessage);
     return true;
   }
+
+  console.log('Non Vide');
+  
 
   return false;
 }
@@ -279,8 +285,13 @@ let lastRenderedGroupList = [];
 let lastRenderedArchivedList = [];
 
 function hasListChanged(newList, oldList) {
+  if (Array.isArray(newList) && Array.isArray(oldList) && newList.length === 0 && oldList.length === 0) {
+    return true;
+  }
+
   return JSON.stringify(newList) !== JSON.stringify(oldList);
 }
+
 
 const REFRESH_INTERVAL = 1000;
 
@@ -293,14 +304,11 @@ export function renderDiscussionContacts() {
   currentIntervalIdContact = setInterval(() => {
     const list = getNormalConversationSummaries(userId);
 
-    if (renderEmptyStateIfNeeded(list, "discussion")) return;
-
-
-    if (!hasListChanged(list, lastRenderedNormalList)) {
-      return;
-    }
+    if (!hasListChanged(list, lastRenderedNormalList)) return;
 
     lastRenderedNormalList = list;
+
+    if (renderEmptyStateIfNeeded(list, "discussion")) return;
 
     discussionContactsContainer.innerHTML = "";
     list
@@ -309,7 +317,8 @@ export function renderDiscussionContacts() {
   }, REFRESH_INTERVAL);
 }
 
-export function renderGroupDiscussions(userId) {
+
+export function renderGroupDiscussions() {
   if (currentIntervalIdContact) {
     clearInterval(currentIntervalIdContact);
     currentIntervalIdContact = null;
@@ -318,12 +327,12 @@ export function renderGroupDiscussions(userId) {
   currentIntervalIdContact = setInterval(() => {
     const list = getGroupConversationSummaries(userId);
 
-    if (renderEmptyStateIfNeeded(list, "group")) return;
-
     if (!hasListChanged(list, lastRenderedGroupList)) return;
 
-
     lastRenderedGroupList = list;
+
+    if (renderEmptyStateIfNeeded(list, "group")) return;
+
     discussionContactsContainer.innerHTML = "";
     list
       .map(createContactItem)
@@ -331,25 +340,32 @@ export function renderGroupDiscussions(userId) {
   }, REFRESH_INTERVAL);
 }
 
-export function renderArchivedDiscussions(userId) {
+
+export function renderArchivedDiscussions() {
   if (currentIntervalIdContact) {
     clearInterval(currentIntervalIdContact);
     currentIntervalIdContact = null;
   }
 
+  
+
   currentIntervalIdContact = setInterval(() => {
     const list = getArchivedConversationSummaries(userId);
 
-    if (renderEmptyStateIfNeeded(list, "archived")) return;
+  console.log('Archive', list);
 
 
     if (!hasListChanged(list, lastRenderedArchivedList)) return;
 
 
     lastRenderedArchivedList = list;
+
+    if (renderEmptyStateIfNeeded(list, "archived")) return;
+
     discussionContactsContainer.innerHTML = "";
     list
       .map(createContactItem)
       .forEach((el) => discussionContactsContainer.appendChild(el));
   }, REFRESH_INTERVAL);
 }
+
