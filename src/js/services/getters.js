@@ -95,55 +95,89 @@ export function getConversationsToServer(userId) {
     });
 }
 
+function isParticipantInConversation(participants, userId) {
+  let found = false;
+
+  console.log(typeof userId);
+  
+  participants.forEach((id) => {
+    if (id == userId) {
+      found = true;
+    }
+  });
+
+  return found;
+}
+
+
 let isFetchingUsers = false;
 const otherUserIds = new Set();
+
 
 export function getUsersWithPrivateConversations(userId) {
   if (isFetchingUsers || userId === null) return;
   isFetchingUsers = true;
 
+  const userIdNum = Number(userId);
+  console.log('dans id', userIdNum);
+  
+  const privateConvos = [];
+
+  console.log('Appell');
+  
+
   fetch(`${BASE_URL}/${CONVERSATION_RESSOURCE}`)
     .then((res) => res.json())
     .then((conversations) => {
-      // Récupérer les conversations privées de l'utilisateur
-      const privateConvos = conversations.filter(
-        (conv) =>
-          !conv.isGroup && conv.participants.includes(Number(userId))
-      );
+      // On utilise forEach pour filtrer manuellement
+      conversations.forEach((conv) => {
+        console.log(conv);
+        console.log(" et ", isParticipantInConversation(conv.participants, userId));
+        
+        
+        if (!conv.isGroup && conv.participants.includes(userIdNum)) {
+          privateConvos.push(conv);
 
-      // Extraire les ID des autres participants
-      privateConvos.forEach((conv) => {
-        conv.participants.forEach((id) => {
-          if (id != userId) otherUserIds.add(id);
-        });
+          conv.participants.forEach((id) => {
+            const idNum = Number(id);
+            if (idNum != userIdNum) {
+              otherUserIds.add(idNum);
+            }
+          });
+        }
       });
+
 
       if (otherUserIds.size === 0) {
         storeUsers([]);
         return;
       }
+      console.log('Fetch');
+
 
       return fetch(`${BASE_URL}/${USERS_RESSOURCE}`);
     })
     .then((res) => res?.json?.())
     .then((users) => {
       if (users) {
+        console.log('Appell TO fetch');
         const filteredUsers = users.filter((u) =>
           otherUserIds.has(Number(u.id))
         );
 
+
+        console.log("Utilisateurs liés à des conversations privées :", filteredUsers);
         storeUsers(filteredUsers);
-        console.log("Utilisateurs privés en relation stockés !");
       }
     })
-    .catch((err) =>
-      console.error(
-        "Erreur lors de la récupération des utilisateurs privés :",
-        err
-      )
-    )
+    .catch((err) => {
+      console.error("Erreur lors de la récupération des utilisateurs privés :", err);
+    })
     .finally(() => {
       isFetchingUsers = false;
     });
 }
+
+
+
 

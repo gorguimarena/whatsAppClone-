@@ -3,12 +3,13 @@ import { sideBar } from "../side-bar/side-bar";
 import { main } from "./listdispaly";
 import { discussion } from "./discussionChamp";
 import { getConversationsToServer, getUsersWithPrivateConversations } from "../../services/getters";
-import { getIsConnected } from "../../services/connect";
 import { statusTextInput } from "./status";
 
-export function getUserId(){
-  return localStorage.getItem('userId') || null;
+export function getUserId() {
+  const value = localStorage.getItem('userId');
+  return value !== null ? JSON.parse(value) : null;
 }
+
 
 export function setUserId(id) {
   localStorage.setItem('userId', JSON.stringify(id));
@@ -39,9 +40,9 @@ export const space = createElement(
 
 
 setInterval(() => {
-  if(navigator.onLine && userId !== null) {
-    getConversationsToServer(userId);
-    getUsersWithPrivateConversations(userId);
+  if(navigator.onLine && getUserId() !== null) {
+    getUsersWithPrivateConversations(getUserId());
+    getConversationsToServer(getUserId());
   }
 }, 5000);
 
