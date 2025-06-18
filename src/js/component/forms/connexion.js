@@ -175,7 +175,7 @@ export const formConnexionContainer = createElement(
       "overflow-hidden",
       "relative",
     ],
-    vShow: window.location.hostname !== "localhost" && !getIsConnected(),
+    vShow: true,
     onSubmit: (e) => {
       e.preventDefault();
 

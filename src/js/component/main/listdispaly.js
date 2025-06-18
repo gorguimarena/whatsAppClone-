@@ -19,5 +19,5 @@ export const main = createElement(
       e.preventDefault();
     },
   },
-  window.location.hostname == "localhost" ? chats : chats
+  chats
 );

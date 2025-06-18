@@ -16,7 +16,6 @@ export function getUser(){
     return JSON.parse(localStorage.getItem('user'));
 }
 
-
 export function clearUser() {
     localStorage.removeItem('user');
 }

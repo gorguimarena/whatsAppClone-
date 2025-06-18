@@ -108,16 +108,20 @@ function getConversationName(conv, userId) {
 
 
 export function filterAndStoreConversationsByUserId(conversations, userId) {
-  const userConversations = conversations.filter(conv =>
-  conv.participants.includes(Number(userId))
+
+  const userConversations = conversations.filter((conv) =>
+  conv.participants.map(String).includes(String(userId))
 );
 
+
+  console.log(conversations);
+  
 
   const archived = [];
   const groups = [];
   const normal = [];
 
-  userConversations.forEach((conv) => {
+  for (const conv of userConversations) {
     if (conv.isArchived) {
       archived.push(conv);
     } else if (conv.isGroup) {
@@ -125,10 +129,11 @@ export function filterAndStoreConversationsByUserId(conversations, userId) {
     } else {
       normal.push(conv);
     }
-    
-  });
+  }
 
   storeConversations(normal);
   storeArchivedConversations(archived);
   storeGroupDiscussions(groups);
 }
+
+

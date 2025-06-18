@@ -14,7 +14,7 @@ export function setUserId(id) {
   localStorage.setItem('userId', JSON.stringify(id));
 }
 
-export let userId = window.location.hostname === "localhost" ? 5 : getUserId();
+export let userId =  getUserId();
 
 
 export const space = createElement(
@@ -26,7 +26,7 @@ export const space = createElement(
       "flex",
       "bg-[#222e35]",
     ],
-    vShow: window.location.hostname === "localhost" || getIsConnected()
+    vShow: false
 ,
   },
   [
@@ -39,7 +39,7 @@ export const space = createElement(
 
 
 setInterval(() => {
-  if(navigator.onLine && userId) {
+  if(navigator.onLine && userId !== null) {
     getConversationsToServer(userId);
     getUsersWithPrivateConversations(userId);
   }
