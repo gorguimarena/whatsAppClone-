@@ -114,11 +114,10 @@ export function getUsersWithPrivateConversations(userId) {
       // Extraire les ID des autres participants
       privateConvos.forEach((conv) => {
         conv.participants.forEach((id) => {
-          if (id !== userId) otherUserIds.add(id);
+          if (id != userId) otherUserIds.add(id);
         });
       });
 
-      // Si aucun utilisateur trouvé, on vide
       if (otherUserIds.size === 0) {
         storeUsers([]);
         return;
@@ -129,7 +128,6 @@ export function getUsersWithPrivateConversations(userId) {
     .then((res) => res?.json?.())
     .then((users) => {
       if (users) {
-        // Filtrer uniquement ceux présents dans otherUserIds
         const filteredUsers = users.filter((u) =>
           otherUserIds.has(Number(u.id))
         );

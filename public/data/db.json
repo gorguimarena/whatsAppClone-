@@ -288,6 +288,13 @@
           "content": "Ok",
           "type": "text",
           "timestamp": "2025-06-16T12:34:22.895Z"
+        },
+        {
+          "id": 41,
+          "senderId": "\"5\"",
+          "content": "salut",
+          "type": "text",
+          "timestamp": "2025-06-18T08:58:38.598Z"
         }
       ]
     }

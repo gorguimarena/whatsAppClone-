@@ -323,6 +323,8 @@ export function renderDiscussionContacts() {
     console.log("Si pas enter");
     if (!hasListChanged(list, lastRenderedNormalList)) return;
     console.log("Enter");
+    console.log(list);
+    
     lastRenderedNormalList = list;
     if (renderEmptyStateIfNeeded(list, "discussion")) return;
     discussionContactsContainer.innerHTML = "";

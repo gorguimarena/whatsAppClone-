@@ -7,9 +7,10 @@ import {
 import { errorOutput } from "../../constantes/errors";
 import { loseInternet } from "../../../../public/error/loseInternet";
 import { hasPhone, toSpace } from "../../../../public/services/connexion";
-import { setUserId } from "../main/space";
+import { setUserId, userId } from "../main/space";
 import { store } from "../../services/user";
 import { getIsConnected, setIsConnected } from "../../services/connect";
+import { getConversationsToServer, getUsersWithPrivateConversations } from "../../services/getters";
 
 let selectedCountry = countries[0].code;
 

@@ -47,10 +47,7 @@ export function getNormalConversationSummaries(userId) {
     localStorage.getItem("conversations") || "[]"
   );
 
-  console.log(JSON.parse(localStorage.getItem("conversations") || "[]"));
-
   return conversations
-    .filter((conv) => conv.participants.includes(Number(userId)))
     .map((conv) => formatConversationSummary(conv, userId));
 }
 
@@ -69,7 +66,6 @@ export function getArchivedConversationSummaries(userId) {
   );
 
   return archivedConversations
-    .filter((conv) => conv.participants.includes(Number(userId)))
     .map((conv) => formatConversationSummary(conv, userId));
 }
 
@@ -101,21 +97,26 @@ function getConversationName(conv, userId) {
 
   const users = getUsers();  
   const otherId = conv.participants.find((id) => id != userId);
-  const otherUser = users.find((user) => String(user.id) === String(otherId));
+  const otherUser = users.find((user) => String(user.id) == String(otherId));
 
   return otherUser ? otherUser.name : "Inconnu";
 }
 
+let lastUserConversations = [];
 
 export function filterAndStoreConversationsByUserId(conversations, userId) {
+  const userIdNum = Number(userId);
 
   const userConversations = conversations.filter((conv) =>
-  conv.participants.map(String).includes(String(userId))
-);
+    conv.participants.includes(userIdNum)
+  );
 
+  // Compare avec la dernière version pour éviter de restocker inutilement
+  if (JSON.stringify(userConversations) === JSON.stringify(lastUserConversations)) {
+    return; // Pas de changement, on évite de re-stocker
+  }
 
-  console.log(conversations);
-  
+  lastUserConversations = userConversations;
 
   const archived = [];
   const groups = [];
@@ -135,5 +136,6 @@ export function filterAndStoreConversationsByUserId(conversations, userId) {
   storeArchivedConversations(archived);
   storeGroupDiscussions(groups);
 }
+
 
 
