@@ -313,7 +313,6 @@ export function clearCurrentInterval() {
 const REFRESH_INTERVAL = 1000;
 
 export function renderDiscussionContacts() {
-  console.log("Enter");
   
   if (currentIntervalIdContact) {
     clearInterval(currentIntervalIdContact);
