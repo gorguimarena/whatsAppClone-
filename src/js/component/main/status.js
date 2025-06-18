@@ -6,189 +6,6 @@ import { userId } from "./space";
 
 export const styleIcon = ["cursor-pointer", "text-white", "text-2xl", "px-1"];
 
-const statusLis = [
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 1",
-      },
-      {
-        type: "icon",
-        value: "Status 2",
-      },
-      {
-        type: "icon",
-        value: "Status 3",
-      },
-    ],
-    username: "User 1",
-    time: "10:00 AM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 4",
-      },
-      {
-        type: "icon",
-        value: "Status 5",
-      },
-      {
-        type: "icon",
-        value: "Status 6",
-      },
-    ],
-    username: "User 2",
-    time: "11:00 AM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-  {
-    content: [
-      {
-        type: "text",
-        value: "Status 7",
-      },
-      {
-        type: "icon",
-        value: "Status 8",
-      },
-      {
-        type: "icon",
-        value: "Status 9",
-      },
-    ],
-    username: "User 3",
-    time: "12:00 PM",
-  },
-];
-
 function saveStatus(userId, content) {
   if (!content.length) {
     alert("Aucun contenu à enregistrer.");
@@ -585,10 +402,9 @@ export function displayUserStatus(user, statusContent) {
 
   renderCurrentStatus();
 
-  // Auto défilement
   autoAdvance = setInterval(() => {
     nextStatus();
-  }, 4000); // 4 secondes par statut
+  }, 4000); 
 }
 
 let lastFetchedStatuses = [];
@@ -617,14 +433,11 @@ export function renderStatusesFromServer() {
         userIds.includes(Number(status.userId))
       );
 
-      // Vérifie si la liste a changé
       if (!hasListChanged(filteredStatuses, lastFetchedStatuses)) return;
       lastFetchedStatuses = filteredStatuses;
 
-      // Regrouper les contenus par userId
       const groupedStatuses = groupStatusesByUser(filteredStatuses);
 
-      // Nettoyer la liste précédente
       statusListItems.innerHTML = "";
 
       Object.entries(groupedStatuses).forEach(([userId, contents]) => {
@@ -642,7 +455,6 @@ export function renderStatusesFromServer() {
               "hover:bg-[#1a2329]",
             ],
             onClick: () => {
-              // ⏩ Affichage des statuts de l'utilisateur
               displayUserStatus(user, contents);
             },
           },

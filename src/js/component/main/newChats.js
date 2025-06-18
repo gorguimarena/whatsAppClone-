@@ -287,11 +287,11 @@ export function setupUserSearch() {
 
 function getConversationIdWithUser(userId) {
   const currentUser = getUser();
-  const conversations = getConversations(); // à adapter selon ton système
+  const conversations = getConversations(); 
 
   const conversation = conversations.find((conv) => {
     return (
-      conv.isGroup === false && // ✅ C’est une discussion privée
+      conv.isGroup === false && 
       conv.participants.includes(Number(currentUser.id)) &&
       conv.participants.includes(Number(userId))
     );

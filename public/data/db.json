@@ -92,8 +92,14 @@
           "senderId": 2,
           "content": "Avec plaisir, dis-moi quand !",
           "timestamp": "2025-05-30T10:31:59.828Z"
+        },
+        {
+          "id": 15,
+          "senderId": 5,
+          "content": "Salut mon ami",
+          "type": "text",
+          "timestamp": "2025-06-18T01:03:08.986Z"
         }
-      
       ]
     },
     {

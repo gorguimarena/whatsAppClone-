@@ -4,7 +4,8 @@ import { clearCurrentInterval, renderDiscussionContacts } from "../component/mai
 import { setSelected } from "../component/side-bar/actionsSideBar";
 import { discusionVider } from "./discussion";
 import { renderSidebar, showChats } from "./sideBar";
-import { newTeam } from "../component/main/newTeam";
+import { newTeam, setupUserSearchInSelectableList } from "../component/main/newTeam";
+import { getUsers } from "./user";
 
 function cleanMain(){
     main.innerHTML = "";
@@ -30,6 +31,7 @@ function newChatToChats(){
 
 function toNTeam(){
     cleanMain();
+    setupUserSearchInSelectableList(getUsers());
     main.appendChild(newTeam);
 }
 

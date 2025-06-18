@@ -1,4 +1,4 @@
-import { discussionContactsContainer } from "./chats";
+import { discussionContactsContainer, inputSearch, setupContactSearch } from "./chats";
 import { createElement } from "../components";
 import {
   getArchivedConversations,
@@ -41,7 +41,16 @@ export function getCurrentConversationId() {
 }
 
 export function switchContact(item) {
+  console.log(item);
+  if(item.isGroup){
+    setupContactSearch(inputSearch, 'group')
+  }else if(item.isArchived){
+    setupContactSearch(inputSearch, 'archived')
+  }else {
+    setupContactSearch(inputSearch, 'normal')
+  }
   if (selectedContactId === item.id) return;
+
   setNameUser(item.name);
   setLastMessageUser(item.lastMessage);
   selectedContactId = item.id;
@@ -66,6 +75,71 @@ function toggleArchive(conversationId, shouldArchive = true) {
   })
     .then((res) => res.json())
     .catch((err) => console.error("Erreur (dés)archivage :", err));
+}
+
+function renderEmptyStateIfNeeded(list, type = "discussion") {
+  discussionContactsContainer.innerHTML = "";
+
+  if (!list.length) {
+    const message =
+      {
+        discussion: "Aucune conversation pour le moment.",
+        group: "Aucun groupe disponible.",
+        archived: "Aucune discussion archivée.",
+      }[type] || "Aucune donnée disponible.";
+
+    const emptyMessage = createElement(
+      "div",
+      {
+        class: [
+          "text-center",
+          "text-gray-400",
+          "p-4",
+          "italic",
+          "text-sm",
+          "w-full",
+        ],
+      },
+      message
+    );
+
+    console.log("Vide");
+
+    discussionContactsContainer.appendChild(emptyMessage);
+    return true;
+  }
+
+  console.log("Non Vide");
+
+  return false;
+}
+
+let lastRenderedNormalList = [];
+let lastRenderedGroupList = [];
+let lastRenderedArchivedList = [];
+
+export function clearlastRenderedNormalList(){
+  lastRenderedNormalList = [];
+}
+export function clearlastRenderedGroupList(){
+  lastRenderedGroupList = [];
+}
+
+export function clearlastRenderedArchivedList(){
+  lastRenderedArchivedList = [];
+}
+
+function hasListChanged(newList, oldList) {
+  if (
+    Array.isArray(newList) &&
+    Array.isArray(oldList) &&
+    newList.length === 0 &&
+    oldList.length === 0
+  ) {
+    return true;
+  }
+
+  return JSON.stringify(newList) !== JSON.stringify(oldList);
 }
 
 export function createContactItem(item) {
@@ -236,77 +310,22 @@ export function clearCurrentInterval() {
   }
 }
 
-function renderEmptyStateIfNeeded(list, type = "discussion") {
-  discussionContactsContainer.innerHTML = "";
-
-  if (!list.length) {
-    const message =
-      {
-        discussion: "Aucune conversation pour le moment.",
-        group: "Aucun groupe disponible.",
-        archived: "Aucune discussion archivée.",
-      }[type] || "Aucune donnée disponible.";
-
-    const emptyMessage = createElement(
-      "div",
-      {
-        class: [
-          "text-center",
-          "text-gray-400",
-          "p-4",
-          "italic",
-          "text-sm",
-          "w-full",
-        ],
-      },
-      message
-    );
-
-    console.log("Vide");
-
-    discussionContactsContainer.appendChild(emptyMessage);
-    return true;
-  }
-
-  console.log("Non Vide");
-
-  return false;
-}
-
-let lastRenderedNormalList = [];
-let lastRenderedGroupList = [];
-let lastRenderedArchivedList = [];
-
-function hasListChanged(newList, oldList) {
-  if (
-    Array.isArray(newList) &&
-    Array.isArray(oldList) &&
-    newList.length === 0 &&
-    oldList.length === 0
-  ) {
-    return true;
-  }
-
-  return JSON.stringify(newList) !== JSON.stringify(oldList);
-}
-
 const REFRESH_INTERVAL = 1000;
 
 export function renderDiscussionContacts() {
+  console.log("Enter");
+  
   if (currentIntervalIdContact) {
     clearInterval(currentIntervalIdContact);
     currentIntervalIdContact = null;
   }
-
   currentIntervalIdContact = setInterval(() => {
     const list = getNormalConversationSummaries(userId);
-
+    console.log("Si pas enter");
     if (!hasListChanged(list, lastRenderedNormalList)) return;
-
+    console.log("Enter");
     lastRenderedNormalList = list;
-
     if (renderEmptyStateIfNeeded(list, "discussion")) return;
-
     discussionContactsContainer.innerHTML = "";
     list
       .map(createContactItem)
@@ -319,16 +338,11 @@ export function renderGroupDiscussions() {
     clearInterval(currentIntervalIdContact);
     currentIntervalIdContact = null;
   }
-
   currentIntervalIdContact = setInterval(() => {
     const list = getGroupConversationSummaries(userId);
-
     if (!hasListChanged(list, lastRenderedGroupList)) return;
-
     lastRenderedGroupList = list;
-
     if (renderEmptyStateIfNeeded(list, "group")) return;
-
     discussionContactsContainer.innerHTML = "";
     list
       .map(createContactItem)
@@ -341,18 +355,11 @@ export function renderArchivedDiscussions() {
     clearInterval(currentIntervalIdContact);
     currentIntervalIdContact = null;
   }
-
   currentIntervalIdContact = setInterval(() => {
     const list = getArchivedConversationSummaries(userId);
-
-    console.log("Archive", list);
-
     if (!hasListChanged(list, lastRenderedArchivedList)) return;
-
     lastRenderedArchivedList = list;
-
     if (renderEmptyStateIfNeeded(list, "archived")) return;
-
     discussionContactsContainer.innerHTML = "";
     list
       .map(createContactItem)

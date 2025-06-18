@@ -1,7 +1,8 @@
 import { getArchivedConversations, getArchivedConversationSummaries, getGroupConversationSummaries, getNormalConversationSummaries } from "../../services/conversations";
+import { discusionVider } from "../../services/discussion";
 import { chatsToNewChat } from "../../services/setter";
 import { createElement } from "../components";
-import { createContactItem, renderArchivedDiscussions, renderDiscussionContacts, renderGroupDiscussions } from "./lister";
+import { clearCurrentInterval, clearlastRenderedArchivedList, clearlastRenderedGroupList, clearlastRenderedNormalList, createContactItem, renderArchivedDiscussions, renderDiscussionContacts, renderGroupDiscussions } from "./lister";
 import { userId } from "./space";
 
 export const inputSearch = createElement("input", {
@@ -19,31 +20,50 @@ export const inputSearch = createElement("input", {
   type: "text",
 });
 
+let currentDisplayMode = "normal"; 
+
+function switchToDisplayMode(mode) {
+  currentDisplayMode = mode;
+
+  discussionContactsContainer.innerHTML = "";
+  clearCurrentInterval();
+  discusionVider();
+
+  setupContactSearch(inputSearch, mode);
+
+  if (mode === "normal") {
+    renderDiscussionContacts();
+  } else if (mode === "group") {
+    renderGroupDiscussions();
+  } else if (mode === "archived") {
+    renderArchivedDiscussions();
+  }
+}
+
+
 const listDisplay = [
   {
     label: "All",
     action: () => {
-      setupContactSearch(inputSearch,'normal');
-      renderDiscussionContacts();
+      clearlastRenderedArchivedList();
+      clearlastRenderedGroupList();
+      switchToDisplayMode("normal")
     },
   },
   {
     label: "Unread",
-    action: () => {
-      console.log("Afficher les messages non lus");
-    },
+    action: () => {},
   },
   {
     label: "Favorites",
-    action: () => {
-      console.log("Afficher les messages favoris");
-    },
+    action: () => {},
   },
   {
     label: "Groups",
     action: () => {
-      setupContactSearch(inputSearch, 'group');
-      renderGroupDiscussions();
+      clearlastRenderedArchivedList();
+      clearlastRenderedNormalList();
+      switchToDisplayMode("group")
     },
   },
 ];
@@ -86,7 +106,6 @@ export function setupContactSearch(inputEl, type = "normal") {
       });
     });
 
-    // Marquer qu’un listener est déjà attaché
     inputEl.dataset.listenerAttached = "true";
   }
 }
@@ -240,7 +259,9 @@ export const chats = createElement(
       {
         class: ["flex", "gap-4", "p-4", "text-white", "text-2xl", 'cursor-pointer'],
         onclick: ()=> {
-          renderArchivedDiscussions();
+          clearlastRenderedNormalList();
+          clearlastRenderedGroupList();
+          switchToDisplayMode("archived")
         }
       },
       [
